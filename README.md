@@ -124,3 +124,27 @@ huaren-deals-astro/
 **Q：需要数据库吗？** 不需要，纯静态，最安全。
 **Q：以后想加邮件订阅/用户系统？** 可以平滑扩展，Astro 支持 API 路由与第三方服务（如 Buttondown / Mailchimp）。
 **Q：能用 Notion 当后台吗？** 可以，后续可加脚本把 Notion 数据库同步成 `src/content/deals/*.md`。
+
+---
+
+## 八、部署上线（GitHub + Vercel）
+
+代码已推送到 GitHub：`https://github.com/dscaro88-debug/shengxin-haiwai`
+
+### 方式 A：Vercel 一键导入（推荐，3 步）
+1. 打开 https://vercel.com/new → 选 **Import Git Repository**
+2. 授权 GitHub，选中仓库 `dscaro88-debug/shengxin-haiwai`
+3. Vercel 会自动识别 Astro（已配 `vercel.json`：build `npm run build`、输出 `dist`）→ 点 **Deploy**
+4. 约 1 分钟部署完成，得到 `https://shengxin-haiwai.vercel.app`（免费域名，可直接用，SEO 即开始收录）
+
+### 方式 B：CLI 部署（若已 `vercel login`）
+```bash
+vercel            # 预览部署
+vercel --prod     # 生产部署
+```
+
+### 上线后必做
+- [ ] 在 Vercel 项目 **Settings → Domains** 绑定你的正式域名（如 shengxin-haiwai.com），并在 `astro.config.mjs` 把 `site` 改为该域名后重新部署
+- [ ] 全局替换占位：微信群链接 `your-link-to-wechat-group.example.com`、邮件订阅 `your-newsletter-provider.example.com`、各 Deal 里的联盟链接 `your-affiliate-link.example.com`
+- [ ] 每天在 `src/content/deals/` 复制模板加 1-2 篇真实优惠，`git add -A && git commit -m "..." && git push`，Vercel 自动重新部署
+
