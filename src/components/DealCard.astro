@@ -1,0 +1,26 @@
+---
+import type { CollectionEntry } from 'astro:content';
+interface Props {
+  deal: CollectionEntry<'deals'>;
+}
+const { deal } = Astro.props;
+const d = deal.data;
+const isFree = d.category === '免费倒赚' || d.tags?.some(t => /倒赚|免费|白拿/i.test(t));
+---
+<article class="deal-card">
+  <div class="top">
+    <span class="cat">{d.category}</span>
+    <span class="region">{d.region}</span>
+    {isFree && <span class="tag-free">🎁 免费 / 倒赚</span>}
+  </div>
+  <h3><a href={`/deals/${deal.id}`}>{d.title}</a></h3>
+  <p class="benefit">{d.benefit}</p>
+  <p class="excerpt">{d.description}</p>
+  <div class="meta">
+    {d.deadline && <span class="deadline">⏰ 截止：{d.deadline}</span>}
+    {!d.deadline && <span>长期有效</span>}
+  </div>
+  <div class="foot">
+    <a class="btn" href={d.affiliateLink} target="_blank" rel="sponsored noopener">{d.buttonText || '立即领取优惠'} →</a>
+  </div>
+</article>

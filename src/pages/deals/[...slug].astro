@@ -1,0 +1,54 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const deals = await getCollection('deals');
+  return deals.map(entry => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+const { entry } = Astro.props;
+const d = entry.data;
+const { Content } = await render(entry);
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: d.title,
+  description: d.description,
+  datePublished: d.pubDate,
+  author: { '@type': 'Organization', name: '省心海外' },
+};
+const wechatGroupUrl = 'https://your-link-to-wechat-group.example.com';
+---
+<Layout title={`${d.title} | 省心海外`} description={d.description}>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <article class="deal-detail">
+    <a class="back" href="/">← 返回首页</a>
+    <h1>{d.title}</h1>
+    <p class="benefit big">{d.benefit}</p>
+    {d.deadline && <p class="deadline">⏰ 截止时间：{d.deadline}</p>}
+    <a class="btn big" href={d.affiliateLink} target="_blank" rel="sponsored noopener">{d.buttonText} →</a>
+
+    {d.steps.length > 0 && (
+      <section class="steps">
+        <h2>操作步骤</h2>
+        <ol>
+          {d.steps.map(s => <li>{s}</li>)}
+        </ol>
+      </section>
+    )}
+
+    <div class="prose">
+      <Content />
+    </div>
+
+    {d.ctaNote && <p class="cta-note">{d.ctaNote}</p>}
+
+    <div class="group-cta">
+      <p>想第一时间收到这类高佣 Deal？加微信群，每日实时推送。</p>
+      <a class="btn" href={wechatGroupUrl}>加微信群 →</a>
+    </div>
+  </article>
+</Layout>

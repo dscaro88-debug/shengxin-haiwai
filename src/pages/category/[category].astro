@@ -1,0 +1,23 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import DealCard from '../../components/DealCard.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const deals = await getCollection('deals');
+  const cats = [...new Set(deals.map(d => d.data.category))];
+  return cats.map(cat => ({
+    params: { category: cat },
+    props: { deals: deals.filter(d => d.data.category === cat) },
+  }));
+}
+const { category } = Astro.params;
+const { deals } = Astro.props;
+const sorted = deals.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+<Layout title={`${category} 优惠合集 | 省心海外`} description={`${category} 相关的高佣优惠、返利与攻略汇总。`}>
+  <h1>{category}</h1>
+  <div class="grid">
+    {sorted.map(d => <DealCard deal={d} />)}
+  </div>
+</Layout>

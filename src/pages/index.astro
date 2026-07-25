@@ -1,0 +1,80 @@
+---
+import Layout from '../layouts/Layout.astro';
+import DealCard from '../components/DealCard.astro';
+import { getCollection } from 'astro:content';
+
+const allDeals = (await getCollection('deals')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+const featured = allDeals.filter(d => d.data.featured).slice(0, 3);
+const latest = allDeals.slice(0, 12);
+const categories = ['购物返利', '信用卡开卡', '银行开户', '华人电商', '生活优惠', '免费倒赚'];
+const wechatGroupUrl = 'https://your-link-to-wechat-group.example.com';
+// ⚠️ 邮件订阅：接入你自己的表单（Mailchimp / Buttondown / 自建）。这里先放占位 action
+const newsletterAction = 'https://your-newsletter-provider.example.com/subscribe';
+---
+<Layout title="省心海外 | 帮海外华人把每笔开销变成返现" description="每日精选 Amazon / Rakuten / 信用卡开卡奖 / 银行开户奖 / 华人电商独家码。中文攻略，步骤清晰，照着做就能省。订阅邮件，不错过任何一个高佣 Deal。">
+  <section class="hero">
+    <h1>海外华人省钱，<span class="hl">不用再自己挖</span></h1>
+    <p class="lede">我们每天从上百个来源里筛出真正高价值的 Deal：信用卡开卡奖、银行开户奖、倒赚活动、华人电商独家码。中文步骤，照着做就能省。<strong>目前从北美起步，欧洲、大洋洲、东南亚站点将陆续开通。</strong></p>
+    <div class="hero-cta">
+      <a class="btn big" href="/category/信用卡开卡">看高佣优惠</a>
+      <a class="btn ghost big" href={wechatGroupUrl}>加微信群领独家</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="n">$200+</div><div class="l">单笔最高开卡奖</div></div>
+      <div class="stat"><div class="n">每日更新</div><div class="l">人工精选，不灌水</div></div>
+      <div class="stat"><div class="n">中文</div><div class="l">步骤清晰，零门槛</div></div>
+    </div>
+  </section>
+
+  <section class="newsletter">
+    <div>
+      <h2>📬 每日高佣 Deal，直接发你邮箱</h2>
+      <p>不追垃圾折扣，只推能真省钱的。每周 3-5 封，随时退订。</p>
+    </div>
+    <form action={newsletterAction} method="post" target="_blank" rel="noopener">
+      <input type="email" name="email" placeholder="你的邮箱地址" required />
+      <button type="submit">免费订阅</button>
+    </form>
+  </section>
+
+  {featured.length > 0 && (
+    <section>
+      <div class="sec-head">
+        <h2>🔥 编辑精选</h2>
+        <a class="more" href="/category/免费倒赚">看全部倒赚 →</a>
+      </div>
+      <div class="grid">
+        {featured.map(d => <DealCard deal={d} />)}
+      </div>
+    </section>
+  )}
+
+  <section>
+    <div class="sec-head">
+      <h2>最新优惠</h2>
+      <a class="more" href="/category/购物返利">浏览全部 →</a>
+    </div>
+    <div class="grid">
+      {latest.map(d => <DealCard deal={d} />)}
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>按分类逛</h2></div>
+    <div class="cat-list">
+      {categories.map(c => <a class="cat-pill" href={`/category/${encodeURIComponent(c)}`}>{c}</a>)}
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>为什么看我们，不看群里转来的？</h2></div>
+    <div class="trust">
+      <div class="item"><div class="ic">🎯</div><h3>只筛高价值</h3><p>不堆"省 $1"的小优惠，每篇都经过佣金与实用性双重筛选。</p></div>
+      <div class="item"><div class="ic">📝</div><h3>步骤说到点</h3><p>中文分步操作，新手也能一次做对，不绕弯子。</p></div>
+      <div class="item"><div class="ic">⏰</div><h3>标注截止</h3><p>每个 Deal 标注有效时间，过期自动归档，不乱推。</p></div>
+      <div class="item"><div class="ic">🔗</div><h3>链接透明</h3><p>推广链接均合规披露，你通过它消费我们才获佣金，你零成本。</p></div>
+    </div>
+  </section>
+</Layout>
