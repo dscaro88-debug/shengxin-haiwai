@@ -43,7 +43,8 @@ img { max-width: 100%; display: block; }
   color: var(--ink); text-decoration: none; white-space: nowrap;
   display: flex; align-items: center; gap: 8px;
 }
-.logo .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--brand); box-shadow: 0 0 0 4px rgba(5,150,105,.15); }
+.logo-icon { display: block; flex: none; }
+.logo-text { font-weight: 800; letter-spacing: .01em; }
 .site-header nav { display: flex; gap: 4px; flex: 1; overflow-x: auto; scrollbar-width: none; }
 .site-header nav::-webkit-scrollbar { display: none; }
 .site-header nav a {

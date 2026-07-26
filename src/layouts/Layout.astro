@@ -8,7 +8,7 @@ interface Props {
   image?: string;
 }
 const { title, description, image = '/og-default.png' } = Astro.props;
-const siteTitle = '雪球智';
+const siteTitle = '雪球·智慧';
 const nav = [
   { href: '/', label: '首页' },
   { href: '/category/海淘省钱', label: '海淘省钱' },
@@ -33,13 +33,14 @@ const wechatGroupUrl = 'https://your-link-to-wechat-group.example.com';
   <meta property="og:type" content="website" />
   <meta property="og:image" content={image} />
   <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="sitemap" href="/sitemap-index.xml" />
   <ClientRouter />
 </head>
 <body>
   <header class="site-header">
     <div class="container header-in">
-      <a href="/" class="logo"><span class="dot"></span>{siteTitle}</a>
+      <a href="/" class="logo"><img src="/logo.svg" alt="雪球·智慧" class="logo-icon" width="30" height="30" /><span class="logo-text">{siteTitle}</span></a>
       <nav>
         {nav.map(item => <a href={item.href}>{item.label}</a>)}
       </nav>
@@ -53,7 +54,7 @@ const wechatGroupUrl = 'https://your-link-to-wechat-group.example.com';
     <div class="container">
       <div class="cols">
         <div>
-          <h4>雪球智</h4>
+          <h4>雪球·智慧</h4>
           <a href="/">首页</a>
           <a href="/category/海淘省钱">海淘省钱</a>
           <a href="/category/副业赚钱">副业赚钱</a>
@@ -74,7 +75,7 @@ const wechatGroupUrl = 'https://your-link-to-wechat-group.example.com';
       </div>
       <div class="legal">
         <p>本站为联盟营销（Affiliate）网站。部分链接为推广链接，您通过链接注册或消费，本站可能获得佣金，<strong>不会增加您的任何费用</strong>。</p>
-        <p>© {new Date().getFullYear()} 雪球智 SnowballWise · 让每一笔省钱，都滚得聪明 · 内容仅供参考，优惠以官方页面为准。</p>
+        <p>© {new Date().getFullYear()} 雪球·智慧 SnowballWise · 让每一笔省钱，都滚得聪明 · 内容仅供参考，优惠以官方页面为准。</p>
       </div>
     </div>
   </footer>

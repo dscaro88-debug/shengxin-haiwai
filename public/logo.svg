@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" role="img" aria-label="雪球·智慧">
+  <defs>
+    <radialGradient id="sb" cx="38%" cy="30%" r="78%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="52%" stop-color="#e8f7ff"/>
+      <stop offset="100%" stop-color="#74c4ef"/>
+    </radialGradient>
+    <linearGradient id="trail" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#9ad7f5" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#9ad7f5" stop-opacity=".85"/>
+    </linearGradient>
+  </defs>
+  <!-- rolling trail (雪球滚过的痕迹) -->
+  <path d="M5 47 Q17 53 29 49" stroke="url(#trail)" stroke-width="3.2" stroke-linecap="round" fill="none"/>
+  <!-- snowball -->
+  <circle cx="37" cy="33" r="20" fill="url(#sb)" stroke="#cdeeff" stroke-width="1.5"/>
+  <!-- snow specks -->
+  <circle cx="31" cy="27" r="2.6" fill="#ffffff" opacity=".92"/>
+  <circle cx="43" cy="38" r="1.9" fill="#ffffff" opacity=".85"/>
+  <circle cx="34" cy="41" r="1.5" fill="#ffffff" opacity=".8"/>
+  <!-- wisdom sparkle -->
+  <path d="M51 17 l2.2 5.4 5.4 2.2 -5.4 2.2 -2.2 5.4 -2.2 -5.4 -5.4 -2.2 5.4 -2.2 z" fill="#ffd86b"/>
+</svg>
