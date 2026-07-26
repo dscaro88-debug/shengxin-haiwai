@@ -2,28 +2,25 @@
 import Layout from '../layouts/Layout.astro';
 import DealCard from '../components/DealCard.astro';
 import { getCollection } from 'astro:content';
+import { SITE } from '../config';
 
-const allDeals = (await getCollection('deals')).sort(
+const allGuides = (await getCollection('deals')).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
-const featured = allDeals.filter(d => d.data.featured).slice(0, 3);
-const latest = allDeals.slice(0, 12);
-const categories = ['海淘省钱', '副业赚钱', '高佣Deal', '信用卡开卡', '银行开户', '免费倒赚'];
-const wechatGroupUrl = 'https://your-link-to-wechat-group.example.com';
-// ⚠️ 邮件订阅：接入你自己的表单（Mailchimp / Buttondown / 自建）。这里先放占位 action
-const newsletterAction = 'https://your-newsletter-provider.example.com/subscribe';
+const latest = allGuides.slice(0, 6);
+const joinUrl = SITE.joinUrl;
 ---
-<Layout title="雪球·智慧 | 让每一笔省钱，都滚得聪明 — AI省钱决策助手 + 副业赚钱系统" description="雪球·智慧 SnowballWise：帮普通人用聪明方式既省下钱也赚到钱。海淘省钱攻略、联盟营销副业训练、高佣Deal精选、AI购物决策。加入社群，让小钱滚成雪球。">
+<Layout title={`${SITE.name} | 让每一笔省钱，都滚得聪明 — 海淘省钱 + 副业赚钱系统`} description="雪球·智慧 SnowballWise：帮普通人用聪明方式既省下钱也赚到钱。海淘省钱攻略、淘宝客副业训练、跨境供应链一件代发。加入微信社群，让小钱滚成雪球。">
   <section class="hero">
     <h1>让每一笔省钱，<span class="hl">都滚得聪明</span></h1>
-    <p class="lede">雪球·智慧不是又一个优惠搬运站。<strong>我们是一套「省钱 + 赚钱」的复利系统：</strong>帮你用 AI 做聪明的购买决策，同时教你把省钱变成副业收入。从海淘返现到联盟佣金，从小额积累到雪球效应。中文攻略，照着做就能上手。</p>
+    <p class="lede"><strong>雪球·智慧是一套「省钱 + 赚钱」的复利系统：</strong>帮国内宝妈和想做副业的年轻人，用海淘省下真金白银，用联盟营销把省钱变成副业收入。中文攻略，照着做就能上手。</p>
     <div class="hero-cta">
-      <a class="btn big" href="/category/副业赚钱">开启副业赚钱</a>
-      <a class="btn ghost big" href={wechatGroupUrl}>加入社群</a>
+      <a class="btn big" href="/earn-taobaoke">开启副业赚钱</a>
+      <a class="btn ghost big" href={joinUrl}>加入微信社群</a>
     </div>
     <div class="hero-stats">
-      <div class="stat"><div class="n">3 条路</div><div class="l">海淘省 / 联盟赚 / 分润裂变</div></div>
-      <div class="stat"><div class="n">中文</div><div class="l">零门槛，手机就能做</div></div>
+      <div class="stat"><div class="n">3 条路</div><div class="l">海淘省 / 联盟赚 / 跨境副业</div></div>
+      <div class="stat"><div class="n">0 成本</div><div class="l">手机就能做，不囤货</div></div>
       <div class="stat"><div class="n">复利</div><div class="l">小钱越滚越大</div></div>
     </div>
   </section>
@@ -32,68 +29,78 @@ const newsletterAction = 'https://your-newsletter-provider.example.com/subscribe
   <section>
     <div class="sec-head"><h2>🎯 雪球·智慧的三条赚钱路</h2></div>
     <div class="trust">
-      <a class="item" href="/earn-haitao"><div class="ic">💰</div><h3>路一：海淘省钱线</h3><p>淘宝客、京东联盟、亚马逊海外购——自己买省钱，分享给宝妈群还能赚佣金。零成本、手机操作。</p><span class="more">查看路线 →</span></a>
-      <a class="item" href="/earn-taobaoke"><div class="ic">🎓</div><h3>路二：淘宝客副业线</h3><p>联盟营销、小红书种草、私域变现——我们真跑通了才教你。课程 ¥299 起，社群订阅 ¥99/月。</p><span class="more">查看路线 →</span></a>
-      <a class="item" href="/earn-crossborder"><div class="ic">❄️</div><h3>路三：跨境副业线</h3><p>用雪球·智慧真实跨境供应链一件代发，不囤货练出第一桶金。老板级货源，你只管卖。</p><span class="more">查看路线 →</span></a>
+      <a class="item" href="/earn-haitao"><div class="ic">💰</div><h3>路一：海淘省钱线</h3><p>自己买省钱，分享给宝妈群还能赚佣金。零成本、手机操作。</p><span class="more">查看路线 →</span></a>
+      <a class="item" href="/earn-taobaoke"><div class="ic">🎓</div><h3>路二：淘宝客副业线</h3><p>联盟营销、小红书种草、私域变现——我们真跑通了才教你。</p><span class="more">查看路线 →</span></a>
+      <a class="item" href="/earn-crossborder"><div class="ic">❄️</div><h3>路三：跨境副业线</h3><p>用雪球·智慧真实跨境供应链一件代发，不囤货练出第一桶金。</p><span class="more">查看路线 →</span></a>
     </div>
   </section>
 
-  <section class="newsletter">
-    <div>
-      <h2>📬 每日聪明省钱机会，直接发你邮箱</h2>
-      <p>不追垃圾折扣，只推能真省钱的 + 能真赚钱的副业机会。每周 3-5 封，随时退订。</p>
+  <!-- 私域入口：核心转化块 -->
+  <section class="wechat-lead">
+    <div class="wl-text">
+      <h2>📲 加微信，领《宝妈海淘避坑 + 淘宝客起步清单》</h2>
+      <p>网站只是样板间，<strong>真正的省钱情报和副业陪跑都在微信社群里</strong>。扫码加我，免费领新人礼包，进群跟着做。</p>
+      <ul class="wl-list">
+        <li>每日精选真实划算好物（母婴 / 护肤 / 日用品）</li>
+        <li>淘宝客起号 + 小红书种草模板</li>
+        <li>卡在哪步直接问，不让你瞎摸索</li>
+      </ul>
+      <a class="btn big" href={joinUrl}>扫码加入（免费）</a>
     </div>
-    <form action={newsletterAction} method="post" target="_blank" rel="noopener">
-      <input type="email" name="email" placeholder="你的邮箱地址" required />
-      <button type="submit">免费订阅</button>
-    </form>
+    <div class="wl-qr">
+      <img src={SITE.wechatQr} alt="雪球·智慧微信二维码" />
+      <p>微信扫一扫 · 备注「雪球」</p>
+    </div>
   </section>
 
-  {featured.length > 0 && (
+  {latest.length > 0 && (
     <section>
       <div class="sec-head">
-        <h2>🔥 编辑精选</h2>
-        <a class="more" href="/category/高佣Deal">看全部高佣 →</a>
+        <h2>📚 最新省钱 & 副业攻略</h2>
+        <a class="more" href="/category/海淘省钱">浏览全部 →</a>
       </div>
       <div class="grid">
-        {featured.map(d => <DealCard deal={d} />)}
+        {latest.map(d => <DealCard deal={d} />)}
       </div>
     </section>
   )}
 
   <section>
-    <div class="sec-head">
-      <h2>最新优惠 & 机会</h2>
-      <a class="more" href="/category/海淘省钱">浏览全部 →</a>
-    </div>
-    <div class="grid">
-      {latest.map(d => <DealCard deal={d} />)}
-    </div>
-  </section>
-
-  <section>
-    <div class="sec-head"><h2>按分类逛</h2></div>
-    <div class="cat-list">
-      {categories.map(c => <a class="cat-pill" href={`/category/${encodeURIComponent(c)}`}>{c}</a>)}
-    </div>
-  </section>
-
-  <section>
     <div class="sec-head"><h2>为什么选雪球·智慧？</h2></div>
     <div class="trust">
-      <div class="item"><div class="ic">🎯</div><h3>只筛高价值</h3><p>不堆"省 $1"的小优惠，每篇经过佣金与实用性双重筛选。</p></div>
-      <div class="item"><div class="ic">🤖</div><h3>AI 决策辅助</h3><p>不只是告诉你哪里便宜，而是帮你做购买决策：历史低价对比、是否值得买、最优返现方案。</p></div>
+      <div class="item"><div class="ic">🎯</div><h3>只筛高价值</h3><p>不堆"省 ¥1"的小优惠，每篇经过实用性与可操作性双重筛选。</p></div>
+      <div class="item"><div class="ic">🤖</div><h3>老板级视角</h3><p>我们真跑过跨境实体生意，给你的是操盘手经验，不是二道贩子搬运。</p></div>
       <div class="item"><div class="ic">📝</div><h3>步骤说到点</h3><p>中文分步操作，新手也能一次做对，不绕弯子。</p></div>
-      <div class="item"><div class="ic">⏰</div><h3>标注截止</h3><p>每个 Deal 标注有效时间，过期自动归档，不乱推。</p></div>
       <div class="item"><div class="ic">🔗</div><h3>链接透明</h3><p>推广链接均合规披露，你通过它消费我们才获佣金，你零成本。</p></div>
       <div class="item"><div class="ic">🧠</div><h3>真跑通才教</h3><p>我们自己在做的项目，有实操结果才出教程。不画大饼，只给可复制的方法。</p></div>
+      <div class="item"><div class="ic">❄️</div><h3>复利思维</h3><p>省下的钱 + 赚到的佣金，滚成越来越大的雪球。</p></div>
     </div>
   </section>
 
   <!-- CTA 底部 -->
   <section style="text-align:center; padding: 2rem 0;">
     <h2 style="margin-bottom:1rem;">准备好让你的钱滚起来了吗？</h2>
-    <p style="font-size:1.1rem; color:var(--text-muted); margin-bottom:1.5rem;">加入雪球·智慧社群，获取每日精选 Deal + 副业实操教程</p>
-    <a class="btn big" href={wechatGroupUrl}>立即加入（免费）</a>
+    <p style="font-size:1.1rem; color:var(--muted); margin-bottom:1.5rem;">加入雪球·智慧微信社群，获取每日精选好物 + 副业实操教程</p>
+    <a class="btn big" href={joinUrl}>立即加入（免费）</a>
   </section>
 </Layout>
+
+<style>
+  .wechat-lead {
+    display: flex; gap: 2rem; align-items: center; flex-wrap: wrap;
+    background: linear-gradient(135deg, #eaf6ff, #f3fbff);
+    border: 1px solid #cfe8fb; border-radius: var(--radius);
+    padding: 2rem; margin: 1.5rem 0;
+  }
+  .wl-text { flex: 1 1 360px; }
+  .wl-text h2 { margin-top: 0; }
+  .wl-list { padding-left: 1.1rem; margin: .8rem 0 1.2rem; color: var(--muted); }
+  .wl-list li { margin: .4rem 0; }
+  .wl-qr { flex: none; text-align: center; }
+  .wl-qr img { width: 180px; height: 180px; border-radius: 12px; background: #fff; padding: 8px; box-shadow: var(--shadow); }
+  .wl-qr p { margin: .6rem 0 0; font-size: .85rem; color: var(--muted); }
+  @media (max-width: 640px) {
+    .wechat-lead { justify-content: center; text-align: center; }
+    .wl-list { text-align: left; display: inline-block; }
+  }
+</style>

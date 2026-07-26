@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
-const wechatGroupUrl = 'https://your-link-to-wechat-group.example.com';
+import { SITE } from '../config';
+const wechatGroupUrl = SITE.joinUrl;
 ---
 <Layout title="淘宝客副业线 | 雪球·智慧 — 0 成本搭一条被动收入" description="淘宝客副业线：不用囤货、不用发货，用手机把刚需好物分享给信任你的人，赚联盟佣金。附高佣选品库与起号笔记模板。">
   <article class="prose">

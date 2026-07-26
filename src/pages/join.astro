@@ -1,0 +1,60 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { SITE } from '../config';
+---
+<Layout title={`加入雪球·智慧社群 | ${SITE.name} — 省钱+副业陪伴圈`} description="加入雪球·智慧微信社群：每日精选真实划算好物、宝妈/普通人副业实操、一对一答疑。扫码加微信，领《宝妈海淘避坑+淘宝客起步清单》。">
+  <article class="prose join-page">
+    <h1>加入雪球·智慧 · 省钱+副业陪伴圈</h1>
+    <p class="lead">这里不是广告群，是一个<strong>边省钱边学赚钱的实操圈</strong>。你进来能拿到三样东西：每日真实划算好物情报、普通人副业拆解、以及一群一起行动的人。</p>
+
+    <div class="qr-card">
+      <img src={SITE.wechatQr} alt="雪球·智慧 微信二维码" class="qr-img" />
+      <div class="qr-info">
+        <h3>① 微信扫一扫，加我好友</h3>
+        <p>微信号：<strong>{SITE.wechatId}</strong></p>
+        <p class="hint">长按或扫上方二维码 → 添加好友时备注「雪球」→ 通过后会拉你进群。</p>
+        <p class="hint">📌 当前二维码为临时入口（扫到本页）。正式运营时我会替换为个人微信二维码，功能不受影响。</p>
+      </div>
+    </div>
+
+    <h2>进群你能得到什么</h2>
+    <ul class="benefits">
+      <li>🛒 <strong>每日精选好物</strong>：母婴 / 护肤 / 日用品，只推真划算、能复购的，不堆垃圾折扣。</li>
+      <li>💡 <strong>副业实操</strong>：淘宝客怎么起号、小红书怎么种草、私域怎么建——有步骤、有模板、有陪跑。</li>
+      <li>📚 <strong>新人礼包</strong>：进群免费领《宝妈海淘避坑 + 淘宝客起步清单》+ 起号笔记模板。</li>
+      <li>🙋 <strong>一对一答疑</strong>：卡在哪一步直接问，不让你自己瞎摸索。</li>
+    </ul>
+
+    <h2>怎么开始（3 步）</h2>
+    <ol class="steps">
+      <li><strong>扫码加微信</strong>（上方二维码 / 搜微信号 {SITE.wechatId}）。</li>
+      <li><strong>备注「雪球」</strong>，通过后我会发你进群链接 + 新人礼包。</li>
+      <li><strong>先看群公告</strong>，跟着做第一笔省钱 / 第一单副业，跑通了再说。</li>
+    </ol>
+
+    <div class="group-cta">
+      <p>也想在小红书看每日实操笔记？搜 <strong>{SITE.xiaohongshu}</strong> 关注我们。</p>
+      <a class="btn" href="/">← 返回首页了解三条赚钱路</a>
+    </div>
+
+    <div class="cta-note">⚠️ 群规：禁刷屏、禁外链、禁广告，违规移出。我们做的是长期信任，不割韭菜。</div>
+  </article>
+</Layout>
+
+<style>
+  .join-page { max-width: 760px; margin: 0 auto; }
+  .lead { font-size: 1.1rem; color: var(--text-muted); }
+  .qr-card {
+    display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap;
+    background: var(--surface, #f4fafe); border: 1px solid var(--border, #d8ecf7);
+    border-radius: 16px; padding: 1.5rem; margin: 1.5rem 0;
+  }
+  .qr-img { width: 200px; height: 200px; border-radius: 12px; background: #fff; padding: 8px; box-shadow: 0 4px 16px rgba(0,0,0,.08); }
+  .qr-info h3 { margin: 0 0 .5rem; }
+  .qr-info p { margin: .3rem 0; }
+  .hint { font-size: .85rem; color: var(--text-muted); }
+  .benefits li, .steps li { margin: .5rem 0; }
+  @media (max-width: 560px) {
+    .qr-card { justify-content: center; text-align: center; }
+  }
+</style>

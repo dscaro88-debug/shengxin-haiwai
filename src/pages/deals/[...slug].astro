@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCollection, render } from 'astro:content';
+import { SITE } from '../../config';
 
 export async function getStaticPaths() {
   const deals = await getCollection('deals');
@@ -18,11 +19,11 @@ const jsonLd = {
   headline: d.title,
   description: d.description,
   datePublished: d.pubDate,
-  author: { '@type': 'Organization', name: '省心海外' },
+  author: { '@type': 'Organization', name: SITE.name },
 };
-const wechatGroupUrl = 'https://your-link-to-wechat-group.example.com';
+const wechatGroupUrl = SITE.joinUrl;
 ---
-<Layout title={`${d.title} | 省心海外`} description={d.description}>
+<Layout title={`${d.title} | ${SITE.name}`} description={d.description}>
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   <article class="deal-detail">
     <a class="back" href="/">← 返回首页</a>

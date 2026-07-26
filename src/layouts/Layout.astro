@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
+import { SITE } from '../config';
 
 interface Props {
   title: string;
@@ -8,18 +9,17 @@ interface Props {
   image?: string;
 }
 const { title, description, image = '/og-default.png' } = Astro.props;
-const siteTitle = '雪球·智慧';
+const siteTitle = SITE.name;
 const nav = [
   { href: '/', label: '首页' },
-  { href: '/category/海淘省钱', label: '海淘省钱' },
-  { href: '/category/副业赚钱', label: '副业赚钱' },
-  { href: '/category/高佣Deal', label: '高佣Deal' },
-  { href: '/category/AI决策', label: 'AI决策' },
+  { href: '/earn-haitao', label: '海淘省钱' },
+  { href: '/earn-taobaoke', label: '淘宝客副业' },
+  { href: '/earn-crossborder', label: '跨境副业' },
+  { href: '/category/海淘省钱', label: '省钱攻略' },
   { href: '/about', label: '关于' },
   { href: '/cooperation', label: '商务合作' },
 ];
-// ⚠️ 改成你自己的微信群/表单链接
-const wechatGroupUrl = 'https://your-link-to-wechat-group.example.com';
+const joinUrl = SITE.joinUrl;
 ---
 <!doctype html>
 <html lang="zh-CN">
@@ -40,11 +40,11 @@ const wechatGroupUrl = 'https://your-link-to-wechat-group.example.com';
 <body>
   <header class="site-header">
     <div class="container header-in">
-      <a href="/" class="logo"><img src="/logo.svg" alt="雪球·智慧" class="logo-icon" width="30" height="30" /><span class="logo-text">{siteTitle}</span></a>
+      <a href="/" class="logo"><img src="/logo.svg" alt={siteTitle} class="logo-icon" width="30" height="30" /><span class="logo-text">{siteTitle}</span></a>
       <nav>
         {nav.map(item => <a href={item.href}>{item.label}</a>)}
       </nav>
-      <a class="btn-wechat" href={wechatGroupUrl}>加入社群</a>
+      <a class="btn-wechat" href={joinUrl}>加入社群</a>
     </div>
   </header>
   <main class="container">
@@ -59,24 +59,24 @@ const wechatGroupUrl = 'https://your-link-to-wechat-group.example.com';
           <a href="/earn-haitao">海淘省钱线</a>
           <a href="/earn-taobaoke">淘宝客副业线</a>
           <a href="/earn-crossborder">跨境副业线</a>
-          <a href="/category/高佣Deal">高佣优惠</a>
+          <a href="/category/海淘省钱">省钱攻略</a>
         </div>
         <div>
           <h4>关于</h4>
           <a href="/about">我们是谁</a>
           <a href="/cooperation">商务合作</a>
-          <a href={wechatGroupUrl}>读者福利群</a>
+          <a href={joinUrl}>读者福利群</a>
         </div>
         <div>
           <h4>关注我们</h4>
-          <a href={wechatGroupUrl}>微信公众号</a>
-          <a href={wechatGroupUrl}>小红书</a>
+          <a href={joinUrl}>微信社群</a>
+          <a href="/about">小红书：{SITE.xiaohongshu}</a>
           <a href="/sitemap-index.xml">站点地图</a>
         </div>
       </div>
       <div class="legal">
-        <p>本站为联盟营销（Affiliate）网站。部分链接为推广链接，您通过链接注册或消费，本站可能获得佣金，<strong>不会增加您的任何费用</strong>。</p>
-        <p>© {new Date().getFullYear()} 雪球·智慧 SnowballWise · 让每一笔省钱，都滚得聪明 · 内容仅供参考，优惠以官方页面为准。</p>
+        <p>{SITE.disclosure}</p>
+        <p>© {new Date().getFullYear()} {siteTitle} SnowballWise · 让每一笔省钱，都滚得聪明 · 内容仅供参考，优惠以官方页面为准。</p>
       </div>
     </div>
   </footer>

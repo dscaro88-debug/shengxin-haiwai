@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
-const wechatGroupUrl = 'https://your-link-to-wechat-group.example.com';
+import { SITE } from '../config';
+const wechatGroupUrl = SITE.joinUrl;
 ---
 <Layout title="跨境副业线 | 雪球·智慧 — 用真实货源练出第一桶金" description="跨境副业线：依托雪球·智慧真实跨境供应链（义乌小商品 / 假发 / 抹茶），一件代发、不囤货，用老板级货源练出你的副业收入。">
   <article class="prose">

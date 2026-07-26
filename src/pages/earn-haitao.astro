@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
-const wechatGroupUrl = 'https://your-link-to-wechat-group.example.com';
+import { SITE } from '../config';
+const wechatGroupUrl = SITE.joinUrl;
 ---
 <Layout title="海淘省钱线 | 雪球·智慧 — 自己买省，分享还能赚" description="海淘省钱线：用对渠道自己买省一笔，把刚需好物分享给闺蜜群还能赚佣金。零成本、手机操作，附海淘避坑清单。">
   <article class="prose">

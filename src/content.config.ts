@@ -11,7 +11,7 @@ const deals = defineCollection({
     category: z.string(),              // 分类（需与导航一致，见 README）
     region: z.string().default('北美'), // 覆盖区域（北美/欧洲/东南亚/大洋洲…）
     tags: z.array(z.string()).default([]),
-    affiliateLink: z.string().url(),   // 你的联盟/推广链接（必填）
+    affiliateLink: z.string(),         // 推广/落地链接：可填联盟链接或站内页如 /join
     buttonText: z.string().default('立即领取优惠'),
     deadline: z.string().optional(),   // 截止时间（可选）
     steps: z.array(z.string()).default([]), // 操作步骤

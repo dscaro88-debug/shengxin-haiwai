@@ -15,7 +15,7 @@ const { category } = Astro.params;
 const { deals } = Astro.props;
 const sorted = deals.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
-<Layout title={`${category} 优惠合集 | 省心海外`} description={`${category} 相关的高佣优惠、返利与攻略汇总。`}>
+<Layout title={`${category} 攻略合集 | 雪球·智慧`} description={`${category} 相关的省钱攻略、副业拆解与实操汇总。`}>
   <h1>{category}</h1>
   <div class="grid">
     {sorted.map(d => <DealCard deal={d} />)}
