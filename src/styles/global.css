@@ -175,6 +175,9 @@ section { margin-bottom: 42px; }
 .trust .item .ic { font-size: 24px; margin-bottom: 8px; }
 .trust .item h3 { margin: 0 0 6px; font-size: 16px; }
 .trust .item p { margin: 0; color: var(--muted); font-size: 14px; }
+.trust a.item { text-decoration: none; color: var(--ink); transition: .18s; display: block; }
+.trust a.item:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--brand); }
+.trust .item .more { display: inline-block; margin-top: 8px; color: var(--brand); font-weight: 600; font-size: 13px; }
 
 /* ---------- Detail ---------- */
 .deal-detail .back { color: var(--muted); text-decoration: none; font-size: 14px; }
