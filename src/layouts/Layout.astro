@@ -8,14 +8,13 @@ interface Props {
   image?: string;
 }
 const { title, description, image = '/og-default.png' } = Astro.props;
-const siteTitle = '省心海外';
+const siteTitle = '雪球智';
 const nav = [
   { href: '/', label: '首页' },
-  { href: '/category/购物返利', label: '购物返利' },
-  { href: '/category/信用卡开卡', label: '信用卡' },
-  { href: '/category/银行开户', label: '银行开户' },
-  { href: '/category/华人电商', label: '华人电商' },
-  { href: '/category/生活优惠', label: '生活优惠' },
+  { href: '/category/海淘省钱', label: '海淘省钱' },
+  { href: '/category/副业赚钱', label: '副业赚钱' },
+  { href: '/category/高佣Deal', label: '高佣Deal' },
+  { href: '/category/AI决策', label: 'AI决策' },
   { href: '/about', label: '关于' },
   { href: '/cooperation', label: '商务合作' },
 ];
@@ -44,7 +43,7 @@ const wechatGroupUrl = 'https://your-link-to-wechat-group.example.com';
       <nav>
         {nav.map(item => <a href={item.href}>{item.label}</a>)}
       </nav>
-      <a class="btn-wechat" href={wechatGroupUrl}>加微信群</a>
+      <a class="btn-wechat" href={wechatGroupUrl}>加入社群</a>
     </div>
   </header>
   <main class="container">
@@ -54,10 +53,11 @@ const wechatGroupUrl = 'https://your-link-to-wechat-group.example.com';
     <div class="container">
       <div class="cols">
         <div>
-          <h4>省心海外</h4>
+          <h4>雪球智</h4>
           <a href="/">首页</a>
-          <a href="/category/信用卡开卡">高佣优惠</a>
-          <a href="/category/华人电商">华人电商</a>
+          <a href="/category/海淘省钱">海淘省钱</a>
+          <a href="/category/副业赚钱">副业赚钱</a>
+          <a href="/category/高佣Deal">高佣优惠</a>
         </div>
         <div>
           <h4>关于</h4>
@@ -74,7 +74,7 @@ const wechatGroupUrl = 'https://your-link-to-wechat-group.example.com';
       </div>
       <div class="legal">
         <p>本站为联盟营销（Affiliate）网站。部分链接为推广链接，您通过链接注册或消费，本站可能获得佣金，<strong>不会增加您的任何费用</strong>。</p>
-        <p>© {new Date().getFullYear()} 省心海外 · 内容仅供参考，优惠以官方页面为准。投资/开户类决策请自行评估风险。</p>
+        <p>© {new Date().getFullYear()} 雪球智 SnowballWise · 让每一笔省钱，都滚得聪明 · 内容仅供参考，优惠以官方页面为准。</p>
       </div>
     </div>
   </footer>

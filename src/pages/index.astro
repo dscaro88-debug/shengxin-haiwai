@@ -8,30 +8,40 @@ const allDeals = (await getCollection('deals')).sort(
 );
 const featured = allDeals.filter(d => d.data.featured).slice(0, 3);
 const latest = allDeals.slice(0, 12);
-const categories = ['购物返利', '信用卡开卡', '银行开户', '华人电商', '生活优惠', '免费倒赚'];
+const categories = ['海淘省钱', '副业赚钱', '高佣Deal', '信用卡开卡', '银行开户', '免费倒赚'];
 const wechatGroupUrl = 'https://your-link-to-wechat-group.example.com';
 // ⚠️ 邮件订阅：接入你自己的表单（Mailchimp / Buttondown / 自建）。这里先放占位 action
 const newsletterAction = 'https://your-newsletter-provider.example.com/subscribe';
 ---
-<Layout title="省心海外 | 帮海外华人把每笔开销变成返现" description="每日精选 Amazon / Rakuten / 信用卡开卡奖 / 银行开户奖 / 华人电商独家码。中文攻略，步骤清晰，照着做就能省。订阅邮件，不错过任何一个高佣 Deal。">
+<Layout title="雪球智 | 让每一笔省钱，都滚得聪明 — AI省钱决策助手 + 副业赚钱系统" description="雪球智 SnowballWise：帮普通人用聪明方式既省下钱也赚到钱。海淘省钱攻略、联盟营销副业训练、高佣Deal精选、AI购物决策。加入社群，让小钱滚成雪球。">
   <section class="hero">
-    <h1>海外华人省钱，<span class="hl">不用再自己挖</span></h1>
-    <p class="lede">我们每天从上百个来源里筛出真正高价值的 Deal：信用卡开卡奖、银行开户奖、倒赚活动、华人电商独家码。中文步骤，照着做就能省。<strong>目前从北美起步，欧洲、大洋洲、东南亚站点将陆续开通。</strong></p>
+    <h1>让每一笔省钱，<span class="hl">都滚得聪明</span></h1>
+    <p class="lede">雪球智不是又一个优惠搬运站。<strong>我们是一套「省钱 + 赚钱」的复利系统：</strong>帮你用 AI 做聪明的购买决策，同时教你把省钱变成副业收入。从海淘返现到联盟佣金，从小额积累到雪球效应。中文攻略，照着做就能上手。</p>
     <div class="hero-cta">
-      <a class="btn big" href="/category/信用卡开卡">看高佣优惠</a>
-      <a class="btn ghost big" href={wechatGroupUrl}>加微信群领独家</a>
+      <a class="btn big" href="/category/副业赚钱">开启副业赚钱</a>
+      <a class="btn ghost big" href={wechatGroupUrl}>加入社群</a>
     </div>
     <div class="hero-stats">
-      <div class="stat"><div class="n">$200+</div><div class="l">单笔最高开卡奖</div></div>
-      <div class="stat"><div class="n">每日更新</div><div class="l">人工精选，不灌水</div></div>
-      <div class="stat"><div class="n">中文</div><div class="l">步骤清晰，零门槛</div></div>
+      <div class="stat"><div class="n">3 条路</div><div class="l">海淘省 / 联盟赚 / 分润裂变</div></div>
+      <div class="stat"><div class="n">中文</div><div class="l">零门槛，手机就能做</div></div>
+      <div class="stat"><div class="n">复利</div><div class="l">小钱越滚越大</div></div>
+    </div>
+  </section>
+
+  <!-- 三大价值主张 -->
+  <section>
+    <div class="sec-head"><h2>🎯 雪球智的三条赚钱路</h2></div>
+    <div class="trust">
+      <div class="item"><div class="ic">💰</div><h3>路一：海淘省钱 + 赚佣金</h3><p>淘宝客、京东联盟、亚马逊海外购——自己买省钱，分享给宝妈群还能赚佣金。零成本、手机操作。</p></div>
+      <div class="item"><div class="ic">🎓</div><h3>路二：副业训练营</h3><p>联盟营销、小红书种草、私域变现——我们真跑通了才教你。课程 ¥299 起，社群订阅 ¥99/月。</p></div>
+      <div class="item"><div class="ic">❄️</div><h3>路三：推广分润裂变</h3><p>邀请好友加入雪球智网络，他们赚佣金你也拿分成。一级分润，合规可持续。</p></div>
     </div>
   </section>
 
   <section class="newsletter">
     <div>
-      <h2>📬 每日高佣 Deal，直接发你邮箱</h2>
-      <p>不追垃圾折扣，只推能真省钱的。每周 3-5 封，随时退订。</p>
+      <h2>📬 每日聪明省钱机会，直接发你邮箱</h2>
+      <p>不追垃圾折扣，只推能真省钱的 + 能真赚钱的副业机会。每周 3-5 封，随时退订。</p>
     </div>
     <form action={newsletterAction} method="post" target="_blank" rel="noopener">
       <input type="email" name="email" placeholder="你的邮箱地址" required />
@@ -43,7 +53,7 @@ const newsletterAction = 'https://your-newsletter-provider.example.com/subscribe
     <section>
       <div class="sec-head">
         <h2>🔥 编辑精选</h2>
-        <a class="more" href="/category/免费倒赚">看全部倒赚 →</a>
+        <a class="more" href="/category/高佣Deal">看全部高佣 →</a>
       </div>
       <div class="grid">
         {featured.map(d => <DealCard deal={d} />)}
@@ -53,8 +63,8 @@ const newsletterAction = 'https://your-newsletter-provider.example.com/subscribe
 
   <section>
     <div class="sec-head">
-      <h2>最新优惠</h2>
-      <a class="more" href="/category/购物返利">浏览全部 →</a>
+      <h2>最新优惠 & 机会</h2>
+      <a class="more" href="/category/海淘省钱">浏览全部 →</a>
     </div>
     <div class="grid">
       {latest.map(d => <DealCard deal={d} />)}
@@ -69,12 +79,21 @@ const newsletterAction = 'https://your-newsletter-provider.example.com/subscribe
   </section>
 
   <section>
-    <div class="sec-head"><h2>为什么看我们，不看群里转来的？</h2></div>
+    <div class="sec-head"><h2>为什么选雪球智？</h2></div>
     <div class="trust">
-      <div class="item"><div class="ic">🎯</div><h3>只筛高价值</h3><p>不堆"省 $1"的小优惠，每篇都经过佣金与实用性双重筛选。</p></div>
+      <div class="item"><div class="ic">🎯</div><h3>只筛高价值</h3><p>不堆"省 $1"的小优惠，每篇经过佣金与实用性双重筛选。</p></div>
+      <div class="item"><div class="ic">🤖</div><h3>AI 决策辅助</h3><p>不只是告诉你哪里便宜，而是帮你做购买决策：历史低价对比、是否值得买、最优返现方案。</p></div>
       <div class="item"><div class="ic">📝</div><h3>步骤说到点</h3><p>中文分步操作，新手也能一次做对，不绕弯子。</p></div>
       <div class="item"><div class="ic">⏰</div><h3>标注截止</h3><p>每个 Deal 标注有效时间，过期自动归档，不乱推。</p></div>
       <div class="item"><div class="ic">🔗</div><h3>链接透明</h3><p>推广链接均合规披露，你通过它消费我们才获佣金，你零成本。</p></div>
+      <div class="item"><div class="ic">🧠</div><h3>真跑通才教</h3><p>我们自己在做的项目，有实操结果才出教程。不画大饼，只给可复制的方法。</p></div>
     </div>
+  </section>
+
+  <!-- CTA 底部 -->
+  <section style="text-align:center; padding: 2rem 0;">
+    <h2 style="margin-bottom:1rem;">准备好让你的钱滚起来了吗？</h2>
+    <p style="font-size:1.1rem; color:var(--text-muted); margin-bottom:1.5rem;">加入雪球智社群，获取每日精选 Deal + 副业实操教程</p>
+    <a class="btn big" href={wechatGroupUrl}>立即加入（免费）</a>
   </section>
 </Layout>
