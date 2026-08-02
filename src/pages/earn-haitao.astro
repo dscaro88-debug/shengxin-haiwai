@@ -1,46 +1,304 @@
 ---
-import Layout from '../layouts/Layout.astro';
 import { SITE } from '../config';
-const wechatGroupUrl = SITE.joinUrl;
+const joinUrl = SITE.joinUrl;
 ---
-<Layout title="海淘省钱线 | 雪球·智慧 — 自己买省，分享还能赚" description="海淘省钱线：用对渠道自己买省一笔，把刚需好物分享给闺蜜群还能赚佣金。零成本、手机操作，附海淘避坑清单。">
-  <article class="prose">
-    <h1>海淘省钱线：自己买省一笔，分享再赚一笔</h1>
-    <p>海淘最大的问题不是"有没有便宜"，而是<strong>信息太乱</strong>——同一个东西，代购、天猫国际、京东国际、亚马逊海外购价格能差出 30%，还藏着关税和物流坑。雪球·智慧的「海淘省钱线」不给你堆链接，只帮你做一件事：<strong>判断现在该不该买、哪条渠道最划算</strong>。</p>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>海淘省钱线 | 雪球·智慧 — 自己买省，分享还能赚</title>
+<meta name="description" content="海淘省钱线：用对渠道自己买省一笔，把刚需好物分享给亲友群还能赚佣金。零成本、手机操作，附海淘避坑清单。无论你是宝妈、上班族还是想轻资产创业的年轻人，都走得通。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style is:global>
+:root{
+  --em-50:#ecfdf5;--em-100:#d1fae5;--em-200:#a7f3d0;--em-300:#6ee7b7;--em-400:#34d399;
+  --em-500:#10b981;--em-600:#059669;--em-700:#047857;--em-800:#065f46;--em-900:#064e3b;--em-950:#022c22;
+  --ink-900:#0b1220;--ink-800:#172033;--ink-700:#334155;--ink-600:#475569;--ink-500:#64748b;--ink-400:#94a3b8;--ink-300:#cbd5e1;--ink-200:#e2e8f0;--ink-100:#f1f5f9;--ink-50:#f8fafc;
+  --bg:#ffffff;--bg-soft:#f7faf9;--bg-tint:#f3fbf8;--line:#e8edf2;
+  --s1:8px;--s2:16px;--s3:24px;--s4:32px;--s5:48px;--s6:64px;--s7:96px;--s8:120px;
+  --r-sm:12px;--r:18px;--r-lg:26px;--r-xl:32px;
+  --sh-sm:0 1px 2px rgba(15,23,42,.05),0 1px 3px rgba(15,23,42,.06);
+  --sh-md:0 6px 16px rgba(15,23,42,.06),0 14px 34px rgba(15,23,42,.08);
+  --sh-lg:0 14px 40px rgba(15,23,42,.10),0 36px 80px rgba(15,23,42,.12);
+  --sh-em:0 18px 44px rgba(5,150,105,.26);
+  --ease:cubic-bezier(.22,.61,.36,1);--ease-out:cubic-bezier(.16,1,.3,1);
+  --font:'Inter',-apple-system,BlinkMacSystemFont,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',system-ui,sans-serif;
+  --maxw:1160px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--ink-700);background:var(--bg);line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.container{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.eyebrow{font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--em-600);margin-bottom:18px;display:inline-flex;align-items:center;gap:8px}
+.eyebrow::before{content:"";width:22px;height:2px;background:var(--em-500);border-radius:2px}
+h1,h2,h3{color:var(--ink-900);letter-spacing:-.025em;line-height:1.1}
+.display{font-size:clamp(42px,5.6vw,66px);font-weight:800;letter-spacing:-.035em;line-height:1.06}
+h2{font-size:clamp(29px,3.8vw,44px);font-weight:740;letter-spacing:-.025em}
+h3{font-size:21px;font-weight:680}
+.lead{font-size:clamp(17px,1.5vw,19px);color:var(--ink-600);line-height:1.65}
+.muted{color:var(--ink-500)}
 
-    <h2>这条路适合谁</h2>
-    <ul>
-      <li><strong>宝妈</strong>：母婴、护肤、营养品是长期刚需，一年省下几千很正常；</li>
-      <li><strong>学生 / 精打细算党</strong>：想买海外好物又不想当冤大头；</li>
-      <li><strong>已经在海淘的人</strong>：把你的购买顺手变成佣金，不增加任何动作。</li>
-    </ul>
+/* 顶栏 */
+.nav{position:fixed;top:0;left:0;right:0;z-index:50;transition:all .4s var(--ease);padding:18px 0}
+.nav.scrolled{background:rgba(255,255,255,.82);backdrop-filter:saturate(180%) blur(18px);box-shadow:var(--sh-sm);padding:12px 0}
+.nav-in{display:flex;align-items:center;justify-content:space-between;gap:24px}
+.brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:19px;color:var(--ink-900)}
+.brand .mark{width:38px;height:38px;border-radius:12px;background:linear-gradient(150deg,var(--em-500),var(--em-800));display:grid;place-items:center;box-shadow:var(--sh-em)}
+.nav-links{display:flex;gap:30px;font-size:15px;font-weight:500;color:var(--ink-600)}
+.nav-links a{transition:color .2s}.nav-links a:hover{color:var(--em-600)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;font-weight:650;font-size:15px;border-radius:14px;padding:13px 24px;transition:transform .25s var(--ease),box-shadow .25s var(--ease),background .25s;cursor:pointer;border:none}
+.btn-primary{background:var(--em-600);color:#fff;box-shadow:var(--sh-em)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 22px 50px rgba(5,150,105,.36)}
+.btn-ghost{background:#fff;color:var(--ink-800);border:1px solid var(--line);box-shadow:var(--sh-sm)}
+.btn-ghost:hover{transform:translateY(-2px);box-shadow:var(--sh-md)}
+.btn-wechat{background:#07c160;color:#fff;box-shadow:0 14px 32px rgba(7,193,96,.3)}
+.btn-wechat:hover{transform:translateY(-2px);box-shadow:0 20px 44px rgba(7,193,96,.4)}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+@media(max-width:860px){.nav-links{display:none}}
 
-    <h2>四步开始（手机就能做）</h2>
+/* 内页页头 */
+.page-hero{padding:140px 0 60px;background:radial-gradient(120% 80% at 88% 8%,rgba(16,185,129,.10),transparent 55%),radial-gradient(80% 60% at 0% 0%,rgba(6,78,59,.05),transparent 50%),var(--bg);border-bottom:1px solid var(--line)}
+.page-hero .display{margin-top:6px;max-width:780px}
+.page-hero .lead{margin-top:20px;max-width:580px}
+.ph-cta{display:flex;gap:14px;margin-top:30px;flex-wrap:wrap}
+
+/* 通用 section */
+section.block{padding:var(--s8) 0}
+.sec-head{max-width:680px;margin:0 auto 56px;text-align:center}
+.sec-head .lead{margin-top:16px}
+
+/* 产品三件套（受众卡复用） */
+.cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+.pcard{background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);padding:34px 30px;box-shadow:var(--sh-sm);transition:transform .35s var(--ease),box-shadow .35s var(--ease);position:relative;overflow:hidden}
+.pcard::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:linear-gradient(90deg,var(--em-500),var(--em-300))}
+.pcard:hover{transform:translateY(-8px);box-shadow:var(--sh-lg)}
+.pcard .pic{width:56px;height:56px;border-radius:16px;background:var(--em-50);color:var(--em-600);display:grid;place-items:center;margin-bottom:22px}
+.pcard h3{margin-bottom:10px}
+.pcard p{font-size:15px;color:var(--ink-600);margin-bottom:18px}
+.pcard ul{list-style:none;display:flex;flex-direction:column;gap:11px}
+.pcard li{display:flex;align-items:flex-start;gap:10px;font-size:14.5px;color:var(--ink-700)}
+.pcard li svg{color:var(--em-500);flex:none;margin-top:3px}
+@media(max-width:880px){.cards3{grid-template-columns:1fr}}
+
+/* 步骤 */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.step{text-align:center;padding:10px}
+.step .num{width:52px;height:52px;margin:0 auto 18px;border-radius:16px;background:var(--bg-tint);border:1px solid var(--em-200);color:var(--em-700);font-weight:800;font-size:20px;display:grid;place-items:center}
+.step h3{font-size:18px;margin-bottom:8px}
+.step p{font-size:14.5px;color:var(--ink-600)}
+@media(max-width:880px){.steps{grid-template-columns:1fr 1fr}.step{padding:6px}}
+@media(max-width:560px){.steps{grid-template-columns:1fr}}
+
+/* 收益数据 */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:28px 24px;box-shadow:var(--sh-sm)}
+.stat .n{font-size:32px;font-weight:800;color:var(--em-700);letter-spacing:-.02em;line-height:1}
+.stat .l{font-size:14px;color:var(--ink-600);margin-top:12px;line-height:1.6}
+@media(max-width:880px){.stats{grid-template-columns:1fr}}
+
+/* 提示框 */
+.note{background:#fffbeb;border:1px solid #fde68a;border-radius:var(--r);padding:18px 20px;color:#92400e;font-size:14.5px;line-height:1.75;margin-top:28px}
+.note b{color:#b45309}
+
+/* 微信引导卡 */
+.wechat-sec{background:var(--bg-tint)}
+.wechat{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:var(--r-xl);padding:48px;box-shadow:var(--sh-md)}
+.wechat h2{margin-bottom:14px}
+.wechat .lead{margin-bottom:22px}
+.wlist{display:flex;flex-direction:column;gap:14px;margin-bottom:26px}
+.wlist div{display:flex;gap:12px;align-items:flex-start;font-size:15.5px;color:var(--ink-700)}
+.wlist svg{color:var(--em-500);flex:none;margin-top:3px}
+.wx-id{display:inline-flex;align-items:center;gap:10px;background:var(--em-50);border:1px dashed var(--em-300);border-radius:12px;padding:12px 18px;font-weight:700;color:var(--em-800);font-size:16px}
+.wx-id svg{color:var(--em-600)}
+.qr-box{background:linear-gradient(160deg,var(--em-50),#fff);border:1px solid var(--line);border-radius:var(--r-lg);padding:30px;display:grid;place-items:center;box-shadow:var(--sh-sm)}
+.qr-svg{width:230px;height:230px;object-fit:contain;background:#fff;border-radius:14px;border:1px solid var(--em-200);padding:8px}
+.qr-cap{margin-top:14px;font-size:13px;color:var(--ink-500);text-align:center}
+@media(max-width:820px){.wechat{grid-template-columns:1fr;padding:32px 24px;gap:30px}}
+
+/* 全宽 CTA */
+.cta{text-align:center;padding:var(--s8) 0;background:linear-gradient(135deg,var(--em-700),var(--em-950));border-radius:var(--r-xl);margin:0 auto;max-width:var(--maxw)}
+.cta h2{color:#fff;max-width:640px;margin:0 auto 18px}
+.cta .lead{color:rgba(255,255,255,.85);max-width:520px;margin:0 auto 32px}
+.cta-wrap{padding:0 28px}
+@media(max-width:880px){.cta{border-radius:0}}
+
+/* 页脚 */
+footer{background:var(--ink-900);color:var(--ink-300);padding:72px 0 40px;margin-top:var(--s8)}
+.foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px}
+.foot-brand .brand{color:#fff;margin-bottom:16px}
+.foot-brand p{font-size:14.5px;color:var(--ink-400);max-width:280px}
+.foot-col h4{color:#fff;font-size:14px;font-weight:700;letter-spacing:.04em;margin-bottom:18px}
+.foot-col a{display:block;font-size:14.5px;color:var(--ink-400);padding:7px 0;transition:color .2s}
+.foot-col a:hover{color:var(--em-400)}
+.foot-bottom{border-top:1px solid rgba(255,255,255,.08);margin-top:56px;padding-top:26px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--ink-500)}
+@media(max-width:820px){.foot-grid{grid-template-columns:1fr 1fr}.foot-brand{grid-column:1/-1}}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s var(--ease-out),transform .8s var(--ease-out)}
+.reveal.in{opacity:1;transform:none}
+.reveal[data-d="1"]{transition-delay:.08s}.reveal[data-d="2"]{transition-delay:.16s}.reveal[data-d="3"]{transition-delay:.24s}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}*{animation:none!important}}
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="container nav-in">
+    <div class="brand"><span class="mark"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M2 12h20" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/><circle cx="12" cy="12" r="6.5" stroke="#fff" stroke-width="2.4"/></svg></span>雪球·智慧</div>
+    <div class="nav-links"><a href="/earn-haitao">海淘省钱</a><a href="/earn-taobaoke">淘宝客副业</a><a href="/earn-crossborder">跨境副业</a><a href="/category/海淘省钱">省钱攻略</a><a href="/about">关于我们</a></div>
+    <a href="#join" class="btn btn-primary">加入社群</a>
+  </div>
+</nav>
+
+<header class="page-hero">
+  <div class="container">
+    <div class="reveal">
+      <span class="eyebrow">海淘省钱线</span>
+      <h1 class="display">自己买省一笔，<br>分享再赚一笔</h1>
+      <p class="lead">海淘最大的问题不是"有没有便宜"，而是信息太乱——同一个东西，代购、天猫国际、京东国际、亚马逊海外购价格能差出 30%，还藏着关税和物流坑。雪球·智慧只帮你做一件事：判断现在该不该买、哪条渠道最划算。无论你是宝妈、上班族还是想轻资产创业的年轻人，这条路都走得通。</p>
+      <div class="ph-cta">
+        <a href="#how" class="btn btn-primary">看四步怎么开始</a>
+        <a href="#join" class="btn btn-ghost">加微信领避坑清单</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- 适合谁 -->
+<section class="block">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow">这条路适合谁</span>
+      <h2>不限身份，三种人最划算</h2>
+      <p class="lead">不囤货、不发货、不客服，纯信息差收益。只要你常网购，就能用上。</p>
+    </div>
+    <div class="cards3">
+      <div class="pcard reveal" data-d="1">
+        <div class="pic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M3 10.5 12 4l9 6.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></div>
+        <h3>家庭采购决策人</h3>
+        <p>母婴、护肤、营养品是长期刚需，一年省下几千很正常。</p>
+        <ul>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>刚需高频，省钱最明显</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>顺手分享，多赚一笔</li>
+        </ul>
+      </div>
+      <div class="pcard reveal" data-d="2">
+        <div class="pic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <h3>精打细算党</h3>
+        <p>上班族、学生党，想买海外好物又不想当冤大头。</p>
+        <ul>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>渠道比价，一眼看懂</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>避坑清单，少交学费</li>
+        </ul>
+      </div>
+      <div class="pcard reveal" data-d="3">
+        <div class="pic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M5 20c0-7 5-12 14-13-1 9-6 14-13 14z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 16c2-4 4-6 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <h3>轻资产创业者</h3>
+        <p>想做副业、想轻资产起步的年轻人，把海淘经验变成收入。</p>
+        <ul>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>0 成本，手机就能做</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>经验复用，长期滚雪球</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 四步开始 -->
+<section class="block" id="how" style="background:var(--bg-soft)">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow">怎么开始</span>
+      <h2>四步，手机就能做</h2>
+    </div>
     <div class="steps">
-      <ol>
-        <li><strong>拿自己的推广位</strong>：注册淘宝联盟（阿里妈妈）/ 京东联盟，实名后创建推广位，拿到专属 PID。这是你赚佣金的"收款账号"。</li>
-        <li><strong>跟着雪球的决策买</strong>：我们每周筛出"真划算 + 真能买"的海淘好物，标注渠道比价和是否值得买，你照着下单就行。</li>
-        <li><strong>自己买也返佣</strong>：通过你自己的推广链接下单，返佣直接进你联盟后台——等于"边花边赚"。</li>
-        <li><strong>分享给闺蜜群</strong>：把刚需好物发到宝妈群 / 朋友圈，她们通过你的链接买，佣金还是你的。</li>
-      </ol>
+      <div class="step reveal" data-d="1"><div class="num">1</div><h3>拿自己的推广位</h3><p>注册淘宝联盟（阿里妈妈）/ 京东联盟，实名后创建推广位，拿到专属 PID——你赚佣金的"收款账号"。</p></div>
+      <div class="step reveal" data-d="2"><div class="num">2</div><h3>跟着雪球决策买</h3><p>我们每周筛出"真划算 + 真能买"的海淘好物，标注渠道比价和是否值得买，照着下单就行。</p></div>
+      <div class="step reveal" data-d="3"><div class="num">3</div><h3>自己买也返佣</h3><p>通过你自己的推广链接下单，返佣直接进联盟后台——等于"边花边赚"。</p></div>
+      <div class="step reveal" data-d="4"><div class="num">4</div><h3>分享给亲友群</h3><p>把刚需好物发到亲友群 / 朋友圈，他们通过你的链接买，佣金还是你的。</p></div>
     </div>
+  </div>
+</section>
 
-    <h2>收益模型（真实可算）</h2>
-    <p>假设你在宝妈群有 50 个活跃好友：</p>
-    <ul>
-      <li>你自己每月海淘消费 ¥2000，返佣约 3%–8% → 省 / 赚 <strong>¥60–160</strong>；</li>
-      <li>群友通过你链接月消费 ¥10000，佣金 3%–8% → 你赚 <strong>¥300–800</strong>；</li>
-      <li>不囤货、不发货、不客服，纯信息差收益，<strong>0 成本启动</strong>。</li>
-    </ul>
-
-    <div class="cta-note">⚠️ 风险提醒：绝对不要自己刷自己的链接（会被封号）；认准官方渠道，警惕"超低价代购"；海淘注意关税与物流时效，以官网为准。</div>
-
-    <h2>为什么跟着雪球·智慧，而不是自己瞎逛</h2>
-    <p>淘宝客人人能注册，但<strong>"注册"和"赚到钱"之间差着一整套选品和信任能力</strong>。我们替你做最累的筛选，把"该买 / 再等等 / 哪渠道"直接给结论，你只管照做。这省下的时间，本身就是钱。</p>
-
-    <div class="group-cta">
-      <p>加入雪球·智慧社群，免费领《宝妈海淘避坑 + 淘客起步清单》</p>
-      <a class="btn" href={wechatGroupUrl}>加入社群（免费）</a>
+<!-- 收益模型 -->
+<section class="block">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow">收益模型</span>
+      <h2>真实可算，0 成本启动</h2>
     </div>
-  </article>
-</Layout>
+    <div class="stats">
+      <div class="stat reveal" data-d="1"><div class="n">¥60–160</div><div class="l">你自己每月海淘消费 ¥2000，返佣 3%–8%，省 / 赚的部分</div></div>
+      <div class="stat reveal" data-d="2"><div class="n">¥300–800</div><div class="l">亲友群 50 人月消费 ¥10000，佣金 3%–8%，你赚的部分</div></div>
+      <div class="stat reveal" data-d="3"><div class="n">¥0</div><div class="l">不囤货、不发货、不客服，纯信息差收益，启动零成本</div></div>
+    </div>
+    <div class="note reveal"><b>⚠️ 风险提醒：</b>绝对不要自己刷自己的链接（会被封号）；认准官方渠道，警惕"超低价代购"；海淘注意关税与物流时效，以官网为准。</div>
+  </div>
+</section>
+
+<!-- 微信引导卡 -->
+<section class="block wechat-sec" id="join">
+  <div class="container">
+    <div class="wechat reveal">
+      <div>
+        <span class="eyebrow">免费加入</span>
+        <h2>加微信，进雪球小分队</h2>
+        <p class="lead">群里有每日精选好物、新手教程和现成素材。进来先领一份《海淘避坑 + 淘客起步清单》。</p>
+        <div class="wlist">
+          <div><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>每日高返利好物，先领券再下单</div>
+          <div><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>手把手注册教程，0 基础也能会</div>
+          <div><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>现成种草素材，复制就能发</div>
+        </div>
+        <div class="wx-id">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 11l18-8-8 18-2-7-8-3z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+          微信号：{SITE.wechatId}
+        </div>
+      </div>
+      <div class="qr-box">
+        <img src={SITE.wechatQr} alt="雪球·智慧 微信二维码" class="qr-svg" />
+        <div class="qr-cap">长按识别 / 扫码加微信<br>（雪球智慧CARO）</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 全宽 CTA -->
+<div class="cta-wrap">
+  <section class="cta reveal">
+    <h2>海淘省下的，本来就是你的</h2>
+    <p class="lead">加微信进群，今天就能领到《海淘避坑 + 淘客起步清单》。</p>
+    <a href="#join" class="btn btn-primary" style="font-size:17px;padding:16px 34px;background:#fff;color:var(--em-800);box-shadow:0 18px 44px rgba(0,0,0,.2)">免费加入雪球·智慧</a>
+  </section>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <div class="brand"><span class="mark"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M2 12h20" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/><circle cx="12" cy="12" r="6.5" stroke="#fff" stroke-width="2.4"/></svg></span>雪球·智慧</div>
+        <p>让每一笔消费都变成你的资产。陪想省钱的人从省钱开始，滚出自己的收入雪球。</p>
+      </div>
+      <div class="foot-col"><h4>产品</h4><a href="/earn-haitao">海淘省钱线</a><a href="/earn-taobaoke">淘宝客副业</a><a href="/earn-crossborder">跨境副业</a><a href="#join">起步包</a></div>
+      <div class="foot-col"><h4>资源</h4><a href="/category/海淘省钱">省钱攻略</a><a href="#join">选品清单</a><a href="#join">新手教程</a><a href="/about">常见问题</a></div>
+      <div class="foot-col"><h4>关于</h4><a href="/about">我们是谁</a><a href="/cooperation">合作招商</a><a href="#join">联系微信</a><a href="/about">合规说明</a></div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 雪球·智慧 · 微信号：雪球智慧CARO</span>
+      <span>正规平台合作 · 佣金透明 · 不收任何入会费</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+const nav=document.getElementById('nav');
+addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>20));
+const io=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
