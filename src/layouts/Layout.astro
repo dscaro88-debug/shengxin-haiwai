@@ -16,6 +16,7 @@ const nav = [
   { href: '/earn-taobaoke', label: '淘宝客副业' },
   { href: '/earn-crossborder', label: '跨境副业' },
   { href: '/category/海淘省钱', label: '省钱攻略' },
+  { href: '/mode', label: '我们的模式' },
   { href: '/about', label: '关于' },
   { href: '/cooperation', label: '商务合作' },
 ];
@@ -44,7 +45,7 @@ const joinUrl = SITE.joinUrl;
       <nav>
         {nav.map(item => <a href={item.href}>{item.label}</a>)}
       </nav>
-      <a class="btn-wechat" href={joinUrl}>加入社群</a>
+      <a class="btn-wechat" href={joinUrl}>成为 OPC</a>
     </div>
   </header>
   <main class="container">
@@ -64,6 +65,7 @@ const joinUrl = SITE.joinUrl;
         <div>
           <h4>关于</h4>
           <a href="/about">我们是谁</a>
+          <a href="/mode">我们的模式</a>
           <a href="/cooperation">商务合作</a>
           <a href={joinUrl}>读者福利群</a>
         </div>
