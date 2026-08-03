@@ -9,6 +9,7 @@ const deals = [
     points: ['月均不到 8 元', '60G 大流量', '亲测网速够用'],
     url: 'https://u.jd.com/UgOfNyO',
     note: '家里老人小孩需要流量、副业双卡、想降话费的，都合适',
+    platform: 'jd',
   },
   {
     img: '/deals/02-herms-toothbrush.png',
@@ -17,6 +18,7 @@ const deals = [
     points: ['软毛护龈不出血', '10 倍洁净力', '家庭装够用'],
     url: 'https://u.jd.com/Urate89',
     note: '一家老小换牙刷，比电动的更省心',
+    platform: 'jd',
   },
   {
     img: '/deals/03-zhihu-sanitary.png',
@@ -25,6 +27,7 @@ const deals = [
     points: ['抑菌除味', '大吸收不侧漏', '亲肤透气'],
     url: 'https://u.jd.com/UDaCPrH',
     note: '每个月都要用的刚需，别将就',
+    platform: 'jd',
   },
   {
     img: '/deals/04-naturetang-skincare.png',
@@ -33,6 +36,17 @@ const deals = [
     points: ['国货抗皱', '紧致提亮', '25+ 女性适用'],
     url: 'https://u.jd.com/UrapNjO',
     note: '国货之光，日常护肤不贵也好用',
+    platform: 'jd',
+    platform: 'jd',
+  },
+  {
+    img: '/deals/05-manhua-chouzhi.png',
+    name: '漫花400张抽纸整箱｜29.9元 · 超10万人种草',
+    rate: '佣金 0.75%',
+    points: ['400张大张整箱', '精装小包随身带', '原木浆湿水不破'],
+    url: 'https://m.tb.cn/h.850kiZk',
+    note: '一张不到1毛钱，囤一次够用两三个月',
+    platform: 'taobao',
   },
 ];
 ---
@@ -95,7 +109,7 @@ const deals = [
     <div class="container">
       <span class="eyebrow">好物清单</span>
       <h1>我们亲自用过、正在推的好物</h1>
-      <p class="lead">每一款都来自雪球·智慧在小红书的真实测评笔记。点击直达京东官方，佣金透明、价格不受影响——你买到的，就是我们自己也在用的。</p>
+      <p class="lead">每一款都来自雪球·智慧在小红书的真实测评笔记。点击直达京东/淘宝官方，佣金透明、价格不受影响——你买到的，就是我们自己也在用的。</p>
       <div class="sync-bar">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 12a8 8 0 0 1 14-5l2 2M20 12a8 8 0 0 1-14 5l-2-2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 4v5h-5M6 20v-5h5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         本页同步自小红书「雪球智慧」已发布笔记，内容可溯源
@@ -117,7 +131,7 @@ const deals = [
               ))}
             </ul>
             <p class="note">{d.note}</p>
-            <a class="go" href={d.url} target="_blank" rel="nofollow noopener">去京东查看
+            <a class="go" href={d.url} target="_blank" rel="nofollow noopener">去{d.platform === 'taobao' ? '淘宝' : '京东'}查看
               <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M9 7h8v8" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
           </div>
         </article>
@@ -126,7 +140,7 @@ const deals = [
 
     <div class="disclose">
       <h4>关于佣金与价格</h4>
-      <p>本页商品均通过京东联盟推广链接。您通过链接在京东下单，雪球·智慧可能获得一笔佣金，<b>不会影响您的任何购买价格</b>。所有优惠以京东官方页面实时信息为准；如链接失效，请在京东搜索对应商品名。</p>
+      <p>本页商品均通过京东联盟 / 淘宝联盟推广链接。您通过链接在京东/淘宝下单，雪球·智慧可能获得一笔佣金，<b>不会影响您的任何购买价格</b>。所有优惠以各平台官方页面实时信息为准；如链接失效，请在对应平台搜索商品名。</p>
     </div>
 
     <div class="cross">
