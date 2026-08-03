@@ -1,76 +1,110 @@
 ---
 import { SITE } from '../config';
 import Layout from '../layouts/Layout.astro';
+
 const deals = [
   {
     img: '/deals/01-guangdian-liuliangka.png',
     name: '中国广电流量卡｜60G/月 · 39元包5年',
+    price: '¥39.00',
     rate: '佣金 80%',
-    points: ['月均不到 8 元', '60G 大流量', '亲测网速够用'],
-    url: 'https://u.jd.com/UgOfNyO',
-    note: '家里老人小孩需要流量、副业双卡、想降话费的，都合适',
     platform: 'jd',
+    category: '数码通信',
+    tags: ['大流量', '长期套餐'],
+    url: 'https://u.jd.com/UgOfNyO',
   },
   {
     img: '/deals/02-herms-toothbrush.png',
     name: 'HERMS 软毛牙刷套装',
+    price: '¥29.90',
     rate: '佣金 35.6%',
-    points: ['软毛护龈不出血', '10 倍洁净力', '家庭装够用'],
-    url: 'https://u.jd.com/Urate89',
-    note: '一家老小换牙刷，比电动的更省心',
     platform: 'jd',
+    category: '日用个护',
+    tags: ['软毛护龈', '家庭装'],
+    url: 'https://u.jd.com/Urate89',
   },
   {
     img: '/deals/03-zhihu-sanitary.png',
     name: '植护卫生巾',
+    price: '¥29.90',
     rate: '佣金 33%',
-    points: ['抑菌除味', '大吸收不侧漏', '亲肤透气'],
-    url: 'https://u.jd.com/UDaCPrH',
-    note: '每个月都要用的刚需，别将就',
     platform: 'jd',
+    category: '日用个护',
+    tags: ['抑菌除味', '大吸收'],
+    url: 'https://u.jd.com/UDaCPrH',
   },
   {
     img: '/deals/04-naturetang-skincare.png',
     name: '自然堂护肤套装',
+    price: '¥199.00',
     rate: '佣金 30%',
-    points: ['国货抗皱', '紧致提亮', '25+ 女性适用'],
-    url: 'https://u.jd.com/UrapNjO',
-    note: '国货之光，日常护肤不贵也好用',
     platform: 'jd',
+    category: '美妆个护',
+    tags: ['国货', '抗皱提亮'],
+    url: 'https://u.jd.com/UrapNjO',
   },
   {
     img: '/deals/05-manhua-chouzhi.png',
-    name: '漫花400张抽纸整箱｜29.9元 · 超10万人种草',
+    name: '漫花400张抽纸整箱',
+    price: '¥29.90',
     rate: '佣金 0.75%',
-    points: ['400张大张整箱', '精装小包随身带', '原木浆湿水不破'],
-    url: 'https://m.tb.cn/h.850kiZk',
-    note: '一张不到1毛钱，囤一次够用两三个月',
     platform: 'taobao',
+    category: '日用百货',
+    tags: ['整箱囤货', '超10万人种草'],
+    url: 'https://m.tb.cn/h.850kiZk',
   },
   {
     img: '/deals/06-vinda-chouzhi.png',
-    name: '维达棉韧压花抽纸3层S码｜48.9元整箱 · 大品牌热销',
+    name: '维达棉韧压花抽纸3层S码',
+    price: '¥48.90',
     rate: '佣金 0.90%',
-    points: ['3层加厚湿水不破', '棉韧压花工艺', 'S码小包装随处放'],
-    url: 'https://m.tb.cn/h.84cn4an',
-    note: '大品牌整箱价，一张不到2毛钱',
     platform: 'taobao',
+    category: '日用百货',
+    tags: ['大品牌', '3层加厚'],
+    url: 'https://m.tb.cn/h.84cn4an',
   },
   {
     img: '/deals/07-xianlang-catfood.png',
-    name: '鲜朗低温烘焙猫粮｜券后168元 · 无谷鲜肉幼猫成猫通用',
+    name: '鲜朗低温烘焙猫粮',
+    price: '¥168.00',
     rate: '佣金 1.35%',
-    points: ['低温烘焙保留营养', '无谷配方护肠胃', '全价鸡肉幼成猫通用'],
-    url: 'https://m.tb.cn/h.8f2HHB2',
-    note: '20元券后168元，旗舰店正品，挑食/肠胃弱的猫可以试试',
     platform: 'taobao',
+    category: '宠物用品',
+    tags: ['低温烘焙', '无谷鲜肉'],
+    url: 'https://m.tb.cn/h.8f2HHB2',
   },
 ];
+
+const platforms = [
+  { key: 'all', label: '全部平台' },
+  { key: 'jd', label: '京东' },
+  { key: 'taobao', label: '淘宝' },
+  { key: 'douyin', label: '抖音' },
+  { key: 'haitao', label: '海淘' },
+];
+
+const categories = [
+  { key: 'all', label: '全部分类' },
+  { key: '日用百货', label: '日用百货' },
+  { key: '日用个护', label: '日用个护' },
+  { key: '美妆个护', label: '美妆个护' },
+  { key: '数码通信', label: '数码通信' },
+  { key: '宠物用品', label: '宠物用品' },
+  { key: '食品', label: '食品' },
+  { key: '服装配饰', label: '服装配饰' },
+];
+
+const platformLabel: Record<string, string> = {
+  jd: '京东',
+  taobao: '淘宝',
+  douyin: '抖音',
+  haitao: '海淘',
+};
 ---
 
 <Layout
-  title="雪球·智慧 — 好物清单：我们亲自用过、正在推的好物"
-  description="雪球·智慧在小红书的真实测评好物，点击直达京东官方，佣金透明、价格不受影响。每款都来自真实使用。"
+  title="雪球·智慧 — 好物清单：全网好价一网打尽"
+  description="雪球·智慧在小红书的真实测评好物，按平台与品类筛选，点击直达京东/淘宝官方，佣金透明、价格不受影响。"
   image="/deals/01-guangdian-liuliangka.png"
 >
   <style is:global>
@@ -79,96 +113,175 @@ const deals = [
     --em-500:#10b981;--em-600:#059669;--em-700:#047857;--em-800:#065f46;--em-900:#064e3b;--em-950:#022c22;
     --ink-900:#0b1220;--ink-800:#172033;--ink-700:#334155;--ink-600:#475569;--ink-500:#64748b;--ink-400:#94a3b8;--ink-300:#cbd5e1;--ink-200:#e2e8f0;--ink-100:#f1f5f9;--ink-50:#f8fafc;
     --bg:#ffffff;--bg-soft:#f7faf9;--bg-tint:#f3fbf8;--line:#e8edf2;
-    --r-sm:12px;--r:18px;--r-lg:26px;--r-xl:32px;
+    --r-sm:10px;--r:14px;--r-lg:18px;--r-xl:24px;
     --sh-sm:0 1px 2px rgba(15,23,42,.05),0 1px 3px rgba(15,23,42,.06);
-    --sh-md:0 6px 16px rgba(15,23,42,.06),0 14px 34px rgba(15,23,42,.08);
-    --sh-lg:0 14px 40px rgba(15,23,42,.10),0 36px 80px rgba(15,23,42,.12);
-    --sh-em:0 18px 44px rgba(5,150,105,.26);
-    --font:'Inter',-apple-system,BlinkMacSystemFont,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',system-ui,sans-serif;
-    --maxw:1160px;
+    --sh-md:0 4px 12px rgba(15,23,42,.06),0 10px 24px rgba(15,23,42,.08);
+    --sh-lg:0 10px 30px rgba(15,23,42,.08),0 24px 60px rgba(15,23,42,.10);
+    --font:'Inter',-apple-system,BlinkMacSystemFont,'PingFang SC','Hirino Sans GB','Microsoft YaHei',system-ui,sans-serif;
+    --maxw:1280px;
   }
-  .deals-hero{padding:120px 0 56px;background:radial-gradient(120% 80% at 88% 8%,rgba(16,185,129,.10),transparent 55%),var(--bg)}
-  .deals-hero .eyebrow{font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--em-600);margin-bottom:18px;display:inline-flex;align-items:center;gap:8px}
-  .deals-hero .eyebrow::before{content:"";width:22px;height:2px;background:var(--em-500);border-radius:2px}
-  .deals-hero h1{font-size:clamp(34px,4.6vw,54px);font-weight:800;letter-spacing:-.035em;line-height:1.08;color:var(--ink-900)}
-  .deals-hero .lead{font-size:clamp(16px,1.4vw,18px);color:var(--ink-600);line-height:1.65;margin-top:20px;max-width:620px}
-  .sync-bar{margin-top:30px;display:inline-flex;align-items:center;gap:10px;font-size:14px;color:var(--em-700);background:var(--em-50);border:1px solid var(--em-200);border-radius:999px;padding:9px 18px}
-  .sync-bar svg{flex:none;color:var(--em-600)}
+  .deals-hero{padding:110px 0 40px;background:radial-gradient(120% 80% at 88% 8%,rgba(16,185,129,.10),transparent 55%),var(--bg)}
+  .deals-hero .eyebrow{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--em-600);margin-bottom:16px;display:inline-flex;align-items:center;gap:8px}
+  .deals-hero .eyebrow::before{content:"";width:20px;height:2px;background:var(--em-500);border-radius:2px}
+  .deals-hero h1{font-size:clamp(32px,4.2vw,50px);font-weight:800;letter-spacing:-.035em;line-height:1.08;color:var(--ink-900)}
+  .deals-hero .lead{font-size:clamp(15px,1.3vw,17px);color:var(--ink-600);line-height:1.65;margin-top:16px;max-width:640px}
 
-  .deals-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:26px;padding:24px 0 40px}
-  .deal{background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--sh-sm);transition:transform .35s cubic-bezier(.22,.61,.36,1),box-shadow .35s cubic-bezier(.22,.61,.36,1);display:flex;flex-direction:column}
-  .deal:hover{transform:translateY(-6px);box-shadow:var(--sh-lg)}
-  .deal .thumb{aspect-ratio:3/4;background:var(--bg-soft);overflow:hidden}
+  .filters{padding:28px 0 18px;position:sticky;top:0;z-index:20;background:linear-gradient(180deg,var(--bg) 70%,rgba(255,255,255,0) 100%);backdrop-filter:blur(8px)}
+  .filter-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
+  .filter-row:last-child{margin-bottom:0}
+  .filter-label{font-size:13px;font-weight:600;color:var(--ink-500);margin-right:4px;white-space:nowrap}
+  .filter-btn{font-size:13.5px;font-weight:500;color:var(--ink-600);background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 15px;cursor:pointer;transition:all .2s;white-space:nowrap}
+  .filter-btn:hover{border-color:var(--em-300);color:var(--em-700)}
+  .filter-btn.active{background:var(--em-600);border-color:var(--em-600);color:#fff;box-shadow:0 4px 12px rgba(5,150,105,.22)}
+
+  .deals-toolbar{display:flex;align-items:center;justify-content:space-between;margin:10px 0 18px}
+  .deals-count{font-size:14px;color:var(--ink-500)}
+  .deals-count b{color:var(--ink-900);font-weight:700}
+
+  .deals-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:18px;padding:0 0 48px}
+  .deal{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh-sm);transition:transform .25s cubic-bezier(.22,.61,.36,1),box-shadow .25s;display:flex;flex-direction:column}
+  .deal:hover{transform:translateY(-4px);box-shadow:var(--sh-md)}
+  .deal.hidden{display:none}
+  .deal .thumb{aspect-ratio:1/1;background:var(--bg-soft);overflow:hidden;position:relative}
   .deal .thumb img{width:100%;height:100%;object-fit:cover}
-  .deal .body{padding:24px 24px 26px;display:flex;flex-direction:column;gap:14px;flex:1}
-  .deal .rate{align-self:flex-start;font-size:12.5px;font-weight:700;color:var(--em-700);background:var(--em-50);border-radius:8px;padding:5px 11px}
-  .deal h3{font-size:19px;font-weight:700;color:var(--ink-900);line-height:1.35;letter-spacing:-.01em}
-  .deal ul{list-style:none;display:flex;flex-direction:column;gap:8px}
-  .deal li{display:flex;gap:9px;font-size:14.5px;color:var(--ink-600)}
-  .deal li svg{color:var(--em-500);flex:none;margin-top:3px}
-  .deal .note{font-size:13.5px;color:var(--ink-500);border-left:3px solid var(--em-200);padding-left:12px;line-height:1.55}
-  .deal .go{margin-top:auto;display:inline-flex;align-items:center;justify-content:center;gap:9px;font-weight:650;font-size:15px;border-radius:14px;padding:13px 20px;background:var(--em-600);color:#fff;box-shadow:var(--sh-em);transition:transform .25s,box-shadow .25s}
-  .deal .go:hover{transform:translateY(-2px);box-shadow:0 22px 50px rgba(5,150,105,.36)}
-  @media(max-width:760px){.deals-grid{grid-template-columns:1fr}}
+  .deal .platform{position:absolute;top:8px;left:8px;font-size:11px;font-weight:600;color:var(--ink-700);background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:6px;padding:3px 7px;backdrop-filter:blur(4px)}
+  .deal .body{padding:12px 13px 14px;display:flex;flex-direction:column;gap:8px;flex:1}
+  .deal .meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .deal .rate{font-size:11px;font-weight:700;color:var(--em-700);background:var(--em-50);border-radius:5px;padding:3px 7px}
+  .deal .cat{font-size:11px;font-weight:500;color:var(--ink-500);background:var(--ink-100);border-radius:5px;padding:3px 7px}
+  .deal h3{font-size:14px;font-weight:600;color:var(--ink-900);line-height:1.45;letter-spacing:-.01em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:40px}
+  .deal .tags{display:flex;flex-wrap:wrap;gap:5px}
+  .deal .tags span{font-size:11px;color:var(--ink-500);background:var(--bg-soft);border:1px solid var(--line);border-radius:5px;padding:2px 6px}
+  .deal .price-row{display:flex;align-items:baseline;justify-content:space-between;margin-top:auto;padding-top:6px}
+  .deal .price{font-size:16px;font-weight:800;color:var(--em-700);letter-spacing:-.02em}
+  .deal .go{font-size:12px;font-weight:600;color:#fff;background:var(--em-600);border-radius:7px;padding:6px 12px;transition:background .2s}
+  .deal .go:hover{background:var(--em-700)}
 
-  .disclose{background:var(--bg-soft);border:1px solid var(--line);border-radius:var(--r-lg);padding:28px 32px;margin:8px 0 56px}
+  @media(max-width:1100px){.deals-grid{grid-template-columns:repeat(5,1fr);gap:16px}}
+  @media(max-width:900px){.deals-grid{grid-template-columns:repeat(4,1fr);gap:14px}}
+  @media(max-width:680px){.deals-grid{grid-template-columns:repeat(3,1fr);gap:12px}.deal .body{padding:10px 11px 12px}.deal h3{font-size:13px;min-height:36px}}
+  @media(max-width:420px){.deals-grid{grid-template-columns:repeat(2,1fr);gap:10px}}
+
+  .empty-state{text-align:center;padding:64px 20px;color:var(--ink-500)}
+  .empty-state.hidden{display:none}
+
+  .disclose{background:var(--bg-soft);border:1px solid var(--line);border-radius:var(--r-lg);padding:26px 30px;margin:0 0 56px}
   .disclose h4{color:var(--ink-900);font-size:16px;margin-bottom:10px}
   .disclose p{font-size:14px;color:var(--ink-600);line-height:1.65}
-  .cross{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:8px 0 64px}
-  .cross .box{background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);padding:30px;box-shadow:var(--sh-sm)}
-  .cross .box h4{color:var(--ink-900);font-size:17px;margin-bottom:10px}
-  .cross .box p{font-size:14.5px;color:var(--ink-600);line-height:1.65}
-  .cross .box a{color:var(--em-600);font-weight:600}
-  @media(max-width:760px){.cross{grid-template-columns:1fr}}
   </style>
 
   <section class="deals-hero">
     <div class="container">
       <span class="eyebrow">好物清单</span>
-      <h1>我们亲自用过、正在推的好物</h1>
-      <p class="lead">每一款都来自雪球·智慧在小红书的真实测评笔记。点击直达京东/淘宝官方，佣金透明、价格不受影响——你买到的，就是我们自己也在用的。</p>
-      <div class="sync-bar">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 12a8 8 0 0 1 14-5l2 2M20 12a8 8 0 0 1-14 5l-2-2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 4v5h-5M6 20v-5h5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        本页同步自小红书「雪球智慧」已发布笔记，内容可溯源
-      </div>
+      <h1>全网好价，一站筛选</h1>
+      <p class="lead">每一款都来自雪球·智慧在小红书的真实测评。按平台、按品类快速找到你想要的，点击直达官方下单——佣金透明，价格不变。</p>
     </div>
   </section>
 
   <div class="container">
-    <div class="deals-grid">
-      {deals.map(d => (
-        <article class="deal">
-          <div class="thumb"><img src={d.img} alt={d.name} loading="lazy" width="600" height="800" /></div>
+    <div class="filters">
+      <div class="filter-row">
+        <span class="filter-label">平台</span>
+        {platforms.map(p => (
+          <button class={`filter-btn platform-btn ${p.key === 'all' ? 'active' : ''}`} data-type="platform" data-value={p.key}>{p.label}</button>
+        ))}
+      </div>
+      <div class="filter-row">
+        <span class="filter-label">品类</span>
+        {categories.map(c => (
+          <button class={`filter-btn category-btn ${c.key === 'all' ? 'active' : ''}`} data-type="category" data-value={c.key}>{c.label}</button>
+        ))}
+      </div>
+    </div>
+
+    <div class="deals-toolbar">
+      <div class="deals-count">共 <b id="deals-count">{deals.length}</b> 个好物</div>
+    </div>
+
+    <div class="deals-grid" id="deals-grid">
+      {deals.map((d, idx) => (
+        <article class="deal" data-platform={d.platform} data-category={d.category} data-index={idx}>
+          <a href={d.url} target="_blank" rel="nofollow noopener" class="thumb">
+            <span class="platform">{platformLabel[d.platform] || d.platform}</span>
+            <img src={d.img} alt={d.name} loading="lazy" width="400" height="400" />
+          </a>
           <div class="body">
-            <span class="rate">{d.rate}</span>
-            <h3>{d.name}</h3>
-            <ul>
-              {d.points.map(p => (
-                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>{p}</li>
-              ))}
-            </ul>
-            <p class="note">{d.note}</p>
-            <a class="go" href={d.url} target="_blank" rel="nofollow noopener">去{d.platform === 'taobao' ? '淘宝' : '京东'}查看
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M9 7h8v8" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            <div class="meta">
+              <span class="rate">{d.rate}</span>
+              <span class="cat">{d.category}</span>
+            </div>
+            <h3><a href={d.url} target="_blank" rel="nofollow noopener" style="color:inherit;text-decoration:none">{d.name}</a></h3>
+            <div class="tags">
+              {d.tags.map(t => <span>{t}</span>)}
+            </div>
+            <div class="price-row">
+              <span class="price">{d.price}</span>
+              <a class="go" href={d.url} target="_blank" rel="nofollow noopener">去{platformLabel[d.platform] || d.platform}</a>
+            </div>
           </div>
         </article>
       ))}
     </div>
 
-    <div class="disclose">
-      <h4>关于佣金与价格</h4>
-      <p>本页商品均通过京东联盟 / 淘宝联盟推广链接。您通过链接在京东/淘宝下单，雪球·智慧可能获得一笔佣金，<b>不会影响您的任何购买价格</b>。所有优惠以各平台官方页面实时信息为准；如链接失效，请在对应平台搜索商品名。</p>
+    <div class="empty-state" id="empty-state">
+      <p>该筛选条件下暂无商品，换个平台或品类看看。</p>
     </div>
 
-    <div class="cross">
-      <div class="box">
-        <h4>小红书：看完整测评</h4>
-        <p>每款好物的使用体验、选购理由、避坑点，都在小红书「雪球智慧」的笔记里。搜索账号即可看到我们亲自拍的图文，比清单更细。</p>
-      </div>
-      <div class="box">
-        <h4>雪球·智慧：沉淀与入口</h4>
-        <p>网站是好物库的长期沉淀（SEO 可搜到），也是「成为 OPC」的入口。想用同样的方法跑通自己的省钱+赚钱小生意，从这里开始。</p>
-      </div>
+    <div class="disclose">
+      <h4>关于佣金与价格</h4>
+      <p>本页商品均通过京东联盟 / 淘宝联盟推广链接。您通过链接下单，雪球·智慧可能获得一笔佣金，<b>不会影响您的任何购买价格</b>。所有优惠以各平台官方页面实时信息为准；如链接失效，请在对应平台搜索商品名。</p>
     </div>
   </div>
+
+  <script is:inline>
+    (function(){
+      const platformBtns = document.querySelectorAll('.platform-btn');
+      const categoryBtns = document.querySelectorAll('.category-btn');
+      const cards = document.querySelectorAll('.deal');
+      const countEl = document.getElementById('deals-count');
+      const emptyState = document.getElementById('empty-state');
+      let activePlatform = 'all';
+      let activeCategory = 'all';
+
+      function update() {
+        let visible = 0;
+        cards.forEach(card => {
+          const p = card.dataset.platform;
+          const c = card.dataset.category;
+          const matchP = activePlatform === 'all' || p === activePlatform;
+          const matchC = activeCategory === 'all' || c === activeCategory;
+          if (matchP && matchC) {
+            card.classList.remove('hidden');
+            visible++;
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+        countEl.textContent = visible;
+        emptyState.classList.toggle('hidden', visible > 0);
+      }
+
+      function setActive(btns, key) {
+        btns.forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.value === key);
+        });
+      }
+
+      platformBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          activePlatform = btn.dataset.value;
+          setActive(platformBtns, activePlatform);
+          update();
+        });
+      });
+
+      categoryBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          activeCategory = btn.dataset.value;
+          setActive(categoryBtns, activeCategory);
+          update();
+        });
+      });
+    })();
+  </script>
 </Layout>
