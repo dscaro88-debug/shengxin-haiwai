@@ -6,6 +6,7 @@ const deals = [
   {
     img: '/deals/01-guangdian-liuliangka.png',
     name: '中国广电流量卡｜60G/月 · 39元包5年',
+    slogan: '39元用5年！60G大流量',
     price: '¥39.00',
     rate: '佣金 80%',
     platform: 'jd',
@@ -16,6 +17,7 @@ const deals = [
   {
     img: '/deals/02-herms-toothbrush.png',
     name: 'HERMS 软毛牙刷套装',
+    slogan: '5块钱的牙刷比电动的还好用',
     price: '¥29.90',
     rate: '佣金 35.6%',
     platform: 'jd',
@@ -26,6 +28,7 @@ const deals = [
   {
     img: '/deals/03-zhihu-sanitary.png',
     name: '植护卫生巾',
+    slogan: '每个月都要用的 别将就',
     price: '¥29.90',
     rate: '佣金 33%',
     platform: 'jd',
@@ -36,6 +39,7 @@ const deals = [
   {
     img: '/deals/04-naturetang-skincare.png',
     name: '自然堂护肤套装',
+    slogan: '30岁后护肤不用太贵但要够用',
     price: '¥199.00',
     rate: '佣金 30%',
     platform: 'jd',
@@ -46,6 +50,7 @@ const deals = [
   {
     img: '/deals/05-manhua-chouzhi.png',
     name: '漫花400张抽纸整箱',
+    slogan: '29.9元400张 超10万人种草',
     price: '¥29.90',
     rate: '佣金 0.75%',
     platform: 'taobao',
@@ -56,6 +61,7 @@ const deals = [
   {
     img: '/deals/06-vinda-chouzhi.png',
     name: '维达棉韧压花抽纸3层S码',
+    slogan: '3层加厚 湿水不破',
     price: '¥48.90',
     rate: '佣金 0.90%',
     platform: 'taobao',
@@ -66,6 +72,7 @@ const deals = [
   {
     img: '/deals/07-xianlang-catfood.png',
     name: '鲜朗低温烘焙猫粮',
+    slogan: '168元 鲜朗烘焙粮',
     price: '¥168.00',
     rate: '佣金 1.35%',
     platform: 'taobao',
@@ -142,14 +149,14 @@ const platformLabel: Record<string, string> = {
   .deal{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh-sm);transition:transform .25s cubic-bezier(.22,.61,.36,1),box-shadow .25s;display:flex;flex-direction:column}
   .deal:hover{transform:translateY(-4px);box-shadow:var(--sh-md)}
   .deal.hidden{display:none}
-  .deal .thumb{aspect-ratio:1/1;background:var(--bg-soft);overflow:hidden;position:relative}
+  .deal .thumb{aspect-ratio:3/4;background:var(--bg-soft);overflow:hidden;position:relative}
   .deal .thumb img{width:100%;height:100%;object-fit:cover}
-  .deal .platform{position:absolute;top:8px;left:8px;font-size:11px;font-weight:600;color:var(--ink-700);background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:6px;padding:3px 7px;backdrop-filter:blur(4px)}
-  .deal .body{padding:12px 13px 14px;display:flex;flex-direction:column;gap:8px;flex:1}
+  .deal .body{padding:12px 13px 14px;display:flex;flex-direction:column;gap:7px;flex:1}
   .deal .meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
   .deal .rate{font-size:11px;font-weight:700;color:var(--em-700);background:var(--em-50);border-radius:5px;padding:3px 7px}
   .deal .cat{font-size:11px;font-weight:500;color:var(--ink-500);background:var(--ink-100);border-radius:5px;padding:3px 7px}
   .deal h3{font-size:14px;font-weight:600;color:var(--ink-900);line-height:1.45;letter-spacing:-.01em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:40px}
+  .deal .slogan{font-size:12.5px;font-weight:500;color:var(--em-700);line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:32px}
   .deal .tags{display:flex;flex-wrap:wrap;gap:5px}
   .deal .tags span{font-size:11px;color:var(--ink-500);background:var(--bg-soft);border:1px solid var(--line);border-radius:5px;padding:2px 6px}
   .deal .price-row{display:flex;align-items:baseline;justify-content:space-between;margin-top:auto;padding-top:6px}
@@ -202,8 +209,7 @@ const platformLabel: Record<string, string> = {
       {deals.map((d, idx) => (
         <article class="deal" data-platform={d.platform} data-category={d.category} data-index={idx}>
           <a href={d.url} target="_blank" rel="nofollow noopener" class="thumb">
-            <span class="platform">{platformLabel[d.platform] || d.platform}</span>
-            <img src={d.img} alt={d.name} loading="lazy" width="400" height="400" />
+            <img src={d.img} alt={d.name} loading="lazy" width="600" height="800" />
           </a>
           <div class="body">
             <div class="meta">
@@ -211,6 +217,7 @@ const platformLabel: Record<string, string> = {
               <span class="cat">{d.category}</span>
             </div>
             <h3><a href={d.url} target="_blank" rel="nofollow noopener" style="color:inherit;text-decoration:none">{d.name}</a></h3>
+            <p class="slogan">{d.slogan}</p>
             <div class="tags">
               {d.tags.map(t => <span>{t}</span>)}
             </div>
