@@ -333,6 +333,17 @@ const deals = [
     tags: ['超万人种草', '小学生专用'],
     url: 'https://s.click.taobao.com/6DXnOyj',
   },
+  {
+    img: '/deals/31-babewink-diaper.png',
+    name: 'babewink婴儿拉拉裤',
+    slogan: '84.9元 超薄透气 夏天不闷屁屁',
+    price: '¥84.90',
+    rate: '佣金 4.50%',
+    platform: 'taobao',
+    category: '母婴用品',
+    tags: ['夏季薄款', '透气学步裤'],
+    url: 'https://s.click.taobao.com/MfpqA7k',
+  },
 ];
 
 const platforms = [
@@ -355,6 +366,7 @@ const categories = [
   { key: '保健养生', label: '保健养生' },
   { key: '服装配饰', label: '服装配饰' },
   { key: '办公文具', label: '办公文具' },
+  { key: '母婴用品', label: '母婴用品' },
 ];
 
 const platformLabel: Record<string, string> = {
@@ -428,6 +440,13 @@ const platformLabel: Record<string, string> = {
   .empty-state{text-align:center;padding:64px 20px;color:var(--ink-500)}
   .empty-state.hidden{display:none}
 
+  .pagination{display:flex;justify-content:center;align-items:center;gap:8px;padding:16px 0 48px;flex-wrap:wrap}
+  .pagination button{font-size:13.5px;font-weight:500;color:var(--ink-600);background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 14px;cursor:pointer;transition:all .2s}
+  .pagination button:hover{border-color:var(--em-300);color:var(--em-700)}
+  .pagination button.active{background:var(--em-600);border-color:var(--em-600);color:#fff}
+  .pagination button:disabled{opacity:.45;cursor:not-allowed}
+  .pagination .page-info{font-size:13.5px;color:var(--ink-500);padding:0 8px}
+
   .disclose{background:var(--bg-soft);border:1px solid var(--line);border-radius:var(--r-lg);padding:26px 30px;margin:0 0 56px}
   .disclose h4{color:var(--ink-900);font-size:16px;margin-bottom:10px}
   .disclose p{font-size:14px;color:var(--ink-600);line-height:1.65}
@@ -486,6 +505,8 @@ const platformLabel: Record<string, string> = {
       ))}
     </div>
 
+    <div class="pagination" id="pagination"></div>
+
     <div class="empty-state" id="empty-state">
       <p>该筛选条件下暂无商品，换个平台或品类看看。</p>
     </div>
@@ -500,28 +521,86 @@ const platformLabel: Record<string, string> = {
     (function(){
       const platformBtns = document.querySelectorAll('.platform-btn');
       const categoryBtns = document.querySelectorAll('.category-btn');
-      const cards = document.querySelectorAll('.deal');
+      const cards = Array.from(document.querySelectorAll('.deal'));
       const countEl = document.getElementById('deals-count');
       const emptyState = document.getElementById('empty-state');
+      const paginationEl = document.getElementById('pagination');
       let activePlatform = 'all';
       let activeCategory = 'all';
+      let currentPage = 1;
+      const pageSize = 30;
 
-      function update() {
-        let visible = 0;
-        cards.forEach(card => {
+      function getMatched() {
+        return cards.filter(card => {
           const p = card.dataset.platform;
           const c = card.dataset.category;
           const matchP = activePlatform === 'all' || p === activePlatform;
           const matchC = activeCategory === 'all' || c === activeCategory;
-          if (matchP && matchC) {
+          return matchP && matchC;
+        });
+      }
+
+      function renderPagination(total) {
+        if (!paginationEl) return;
+        const totalPages = Math.ceil(total / pageSize) || 1;
+        if (totalPages <= 1) {
+          paginationEl.innerHTML = '';
+          return;
+        }
+        if (currentPage > totalPages) currentPage = totalPages;
+        if (currentPage < 1) currentPage = 1;
+
+        let html = '';
+        html += `<button class="prev" ${currentPage === 1 ? 'disabled' : ''}>上一页</button>`;
+        for (let i = 1; i <= totalPages; i++) {
+          html += `<button class="page-num ${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</button>`;
+        }
+        html += `<button class="next" ${currentPage === totalPages ? 'disabled' : ''}>下一页</button>`;
+        html += `<span class="page-info">${currentPage} / ${totalPages}</span>`;
+        paginationEl.innerHTML = html;
+
+        paginationEl.querySelectorAll('.page-num').forEach(btn => {
+          btn.addEventListener('click', () => {
+            currentPage = parseInt(btn.dataset.page, 10);
+            update();
+          });
+        });
+        const prevBtn = paginationEl.querySelector('.prev');
+        const nextBtn = paginationEl.querySelector('.next');
+        if (prevBtn) {
+          prevBtn.addEventListener('click', () => {
+            if (currentPage > 1) { currentPage--; update(); }
+          });
+        }
+        if (nextBtn) {
+          nextBtn.addEventListener('click', () => {
+            if (currentPage < totalPages) { currentPage++; update(); }
+          });
+        }
+      }
+
+      function update() {
+        const matched = getMatched();
+        const total = matched.length;
+        const totalPages = Math.ceil(total / pageSize) || 1;
+        if (currentPage > totalPages) currentPage = totalPages;
+        if (currentPage < 1) currentPage = 1;
+        const start = (currentPage - 1) * pageSize;
+        const end = start + pageSize;
+
+        cards.forEach(card => card.classList.add('hidden'));
+        matched.forEach((card, idx) => {
+          if (idx >= start && idx < end) {
             card.classList.remove('hidden');
-            visible++;
-          } else {
-            card.classList.add('hidden');
           }
         });
-        countEl.textContent = visible;
-        emptyState.classList.toggle('hidden', visible > 0);
+
+        countEl.textContent = total;
+        emptyState.classList.toggle('hidden', total > 0);
+        renderPagination(total);
+        if (matched.length && matched[start]) {
+          matched[start].scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
       }
 
       function setActive(btns, key) {
@@ -533,6 +612,7 @@ const platformLabel: Record<string, string> = {
       platformBtns.forEach(btn => {
         btn.addEventListener('click', () => {
           activePlatform = btn.dataset.value;
+          currentPage = 1;
           setActive(platformBtns, activePlatform);
           update();
         });
@@ -541,10 +621,13 @@ const platformLabel: Record<string, string> = {
       categoryBtns.forEach(btn => {
         btn.addEventListener('click', () => {
           activeCategory = btn.dataset.value;
+          currentPage = 1;
           setActive(categoryBtns, activeCategory);
           update();
         });
       });
+
+      update();
     })();
   </script>
 </Layout>
