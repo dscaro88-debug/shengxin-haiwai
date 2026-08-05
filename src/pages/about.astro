@@ -1,4 +1,6 @@
 ---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 import { SITE } from '../config';
 const joinUrl = SITE.joinUrl;
 ---
@@ -126,13 +128,7 @@ footer{background:var(--ink-900);color:var(--ink-300);padding:72px 0 40px;margin
 </head>
 <body>
 
-<nav class="nav" id="nav">
-  <div class="container nav-in">
-    <div class="brand"><span class="mark"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M2 12h20" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/><circle cx="12" cy="12" r="6.5" stroke="#fff" stroke-width="2.4"/></svg></span>雪球·智慧</div>
-    <div class="nav-links"><a href="/">首页</a><a href="/earn-haitao">海淘省钱</a><a href="/earn-taobaoke">淘宝客副业</a><a href="/earn">赚钱机制</a><a href="/category/海淘省钱">省钱攻略</a><a href="/deals">好物清单</a><a href="/mode">我们的模式</a><a href="/about">关于</a><a href="/cooperation">商务合作</a></div>
-    <a href="/join" class="btn btn-primary">成为 OPC</a>
-  </div>
-</nav>
+<Header />
 
 <header class="page-hero">
   <div class="container">
@@ -253,27 +249,9 @@ footer{background:var(--ink-900);color:var(--ink-300);padding:72px 0 40px;margin
   </section>
 </div>
 
-<footer>
-  <div class="container">
-    <div class="foot-grid">
-      <div class="foot-brand">
-        <div class="brand"><span class="mark"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M2 12h20" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/><circle cx="12" cy="12" r="6.5" stroke="#fff" stroke-width="2.4"/></svg></span>雪球·智慧</div>
-        <p>让每一笔消费都变成你的资产。陪想省钱的人从省钱开始，滚出自己的收入雪球。</p>
-      </div>
-      <div class="foot-col"><h4>产品</h4><a href="/earn-haitao">海淘省钱线</a><a href="/earn-taobaoke">淘宝客副业</a><a href="#join">起步包</a></div>
-      <div class="foot-col"><h4>资源</h4><a href="/category/海淘省钱">省钱攻略</a><a href="#join">选品清单</a><a href="#join">新手教程</a><a href="/about">常见问题</a></div>
-      <div class="foot-col"><h4>关于</h4><a href="/about">我们是谁</a><a href="/cooperation">合作招商</a><a href="#join">联系微信</a><a href="/about">合规说明</a></div>
-    </div>
-    <div class="foot-bottom">
-      <span>© 2026 雪球·智慧 · 微信号：雪球智慧CARO</span>
-      <span>正规平台合作 · 佣金透明 · 不收任何入会费</span>
-    </div>
-  </div>
-</footer>
+<Footer />
 
 <script>
-const nav=document.getElementById('nav');
-addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>20));
 const io=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 </script>

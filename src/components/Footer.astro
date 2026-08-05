@@ -1,0 +1,45 @@
+---
+import { SITE } from '../config';
+const siteTitle = SITE.name;
+const joinUrl = SITE.joinUrl;
+---
+<footer class="site-footer">
+  <div class="container">
+    <div class="cols">
+      <div>
+        <h4>雪球·智慧</h4>
+        <a href="/">首页</a>
+        <a href="/earn-haitao">海淘省钱线</a>
+        <a href="/earn-taobaoke">淘宝客副业线</a>
+        <a href="/earn">赚钱怎么算</a>
+        <a href="/category/海淘省钱">省钱攻略</a>
+      </div>
+      <div>
+        <h4>关于</h4>
+        <a href="/about">我们是谁</a>
+        <a href="/mode">我们的模式</a>
+        <a href="/cooperation">商务合作</a>
+        <a href={joinUrl}>读者福利群</a>
+      </div>
+      <div>
+        <h4>关注我们</h4>
+        <a href={joinUrl}>微信社群</a>
+        <a href="/about">小红书：{SITE.xiaohongshu}</a>
+        <a href="/sitemap-index.xml">站点地图</a>
+      </div>
+    </div>
+    <div class="legal">
+      <p>{SITE.disclosure}</p>
+      <p>© {new Date().getFullYear()} {siteTitle} SnowballWise · 让每一笔省钱，都滚得聪明 · 内容仅供参考，优惠以官方页面为准。</p>
+    </div>
+  </div>
+</footer>
+<style>
+  .site-footer { background: #0f172a; color: #94a3b8; padding: 40px 0 30px; font-size: 13px; margin-top: 20px; }
+  .site-footer .cols { display: flex; gap: 40px; flex-wrap: wrap; margin-bottom: 24px; }
+  .site-footer h4 { color: #e2e8f0; font-size: 14px; margin: 0 0 10px; }
+  .site-footer a { color: #94a3b8; text-decoration: none; display: block; margin-bottom: 6px; }
+  .site-footer a:hover { color: #ffffff; }
+  .site-footer .legal { border-top: 1px solid #1e293b; padding-top: 18px; color: #64748b; line-height: 1.7; }
+  .site-footer .legal strong { color: #cbd5e1; }
+</style>
