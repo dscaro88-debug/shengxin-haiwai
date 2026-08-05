@@ -573,12 +573,12 @@ const platformLabel: Record<string, string> = {
     </div>
 
     <div class="deals-toolbar">
-      <div class="deals-count">共 <b id="deals-count">{deals.length}</b> 个好物</div>
+      <div class="deals-count">共 <b id="deals-count">{deals.filter(d => !d.hidden).length}</b> 个好物</div>
     </div>
 
     <div class="deals-grid" id="deals-grid">
       {deals.map((d, idx) => (
-        <article class="deal" data-platform={d.platform} data-category={d.category} data-index={idx}>
+        <article class:list={['deal', d.hidden && 'hidden']} data-platform={d.platform} data-category={d.category} data-index={idx}>
           <a href={d.url} target="_blank" rel="nofollow noopener" class="thumb">
             <img src={d.img} alt={d.name} loading="lazy" width="600" height="800" />
           </a>
