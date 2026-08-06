@@ -160,12 +160,13 @@ const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
   <!-- 注册/登录面板 -->
   <section id="auth-panel" class="auth-wrap">
     <div class="auth-tabs">
-      <button id="tab-register" class="on" onclick="switchTab('register')">注册拿推广码</button>
-      <button id="tab-login" onclick="switchTab('login')">已有账号？登录</button>
+      <button type="button" id="tab-register" class="on">注册拿推广码</button>
+      <button type="button" id="tab-login">已有账号？登录</button>
     </div>
 
     <!-- 注册表单 -->
-    <form id="form-register" class="auth-form" onsubmit="doRegister(event)">
+    <form id="form-register" class="auth-form">
+      <h3 style="margin:0 0 18px;font-size:20px;color:var(--ink-900)">注册账号，领取推广码</h3>
       <div>
         <label>邮箱（用作账号 + 找回密码）</label>
         <input type="email" id="reg-email" placeholder="you@example.com" required />
@@ -185,7 +186,8 @@ const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
     </form>
 
     <!-- 登录表单 -->
-    <form id="form-login" class="auth-form hidden" onsubmit="doLogin(event)">
+    <form id="form-login" class="auth-form hidden">
+      <h3 style="margin:0 0 18px;font-size:20px;color:var(--ink-900)">欢迎回来，请登录</h3>
       <div>
         <label>邮箱</label>
         <input type="email" id="login-email" placeholder="you@example.com" required />
@@ -222,7 +224,7 @@ const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
         <div style="font-size:11px;color:#94a3b8;letter-spacing:.1em;text-transform:uppercase">分享链接</div>
         <div class="link" id="dash-link">--</div>
       </div>
-      <button class="copy" onclick="copyLink()">复制链接</button>
+      <button class="copy" id="dash-copy-main">复制链接</button>
     </div>
 
     <div class="ledger">
@@ -231,8 +233,8 @@ const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
     </div>
 
     <div class="actions">
-      <button class="small" onclick="copyLink()">复制推广链接</button>
-      <button class="small" onclick="doLogout()">退出登录</button>
+      <button class="small" id="dash-copy-action">复制推广链接</button>
+      <button class="small" id="dash-logout">退出登录</button>
       <a class="small" href="/deals" style="text-decoration:none;display:inline-block">去看优惠商品 →</a>
     </div>
   </section>
@@ -341,11 +343,13 @@ const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
       document.getElementById('global-success').classList.remove('on');
     }
 
-    function copyLink() {
+    function copyLink(e) {
       const link = document.getElementById('dash-link').textContent;
       navigator.clipboard.writeText(link).then(() => {
-        const btn = event.target; btn.textContent = '已复制 ✓';
-        setTimeout(() => btn.textContent = '复制链接', 1500);
+        const btn = e && e.target ? e.target : document.querySelector('.promo-box .copy');
+        const old = btn.textContent;
+        btn.textContent = '已复制 ✓';
+        setTimeout(() => btn.textContent = old, 1500);
       });
     }
 
@@ -396,7 +400,16 @@ const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
         .catch(() => { TOKEN = ''; localStorage.removeItem('sb_token'); });
     }
 
-    // Astro 会把 define:vars 脚本包成 IIFE，onclick 内联事件找不到函数；必须挂到 window
+    // 用 addEventListener 绑定事件，彻底避开 Astro IIFE / inline onclick 作用域问题
+    document.getElementById('tab-register').addEventListener('click', () => switchTab('register'));
+    document.getElementById('tab-login').addEventListener('click', () => switchTab('login'));
+    document.getElementById('form-register').addEventListener('submit', doRegister);
+    document.getElementById('form-login').addEventListener('submit', doLogin);
+    document.getElementById('dash-copy-main').addEventListener('click', copyLink);
+    document.getElementById('dash-copy-action').addEventListener('click', copyLink);
+    document.getElementById('dash-logout').addEventListener('click', doLogout);
+
+    // 兼容内联事件（万一其他页面/调试用到）
     window.switchTab = switchTab;
     window.doRegister = doRegister;
     window.doLogin = doLogin;
