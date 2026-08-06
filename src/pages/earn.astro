@@ -395,6 +395,13 @@ const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
       callApi('/api/me').then(out => { USER = out.user; renderDash(); })
         .catch(() => { TOKEN = ''; localStorage.removeItem('sb_token'); });
     }
+
+    // Astro 会把 define:vars 脚本包成 IIFE，onclick 内联事件找不到函数；必须挂到 window
+    window.switchTab = switchTab;
+    window.doRegister = doRegister;
+    window.doLogin = doLogin;
+    window.copyLink = copyLink;
+    window.doLogout = doLogout;
   </script>
 
   <p class="note" style="text-align:center;font-size:13px;color:var(--ink-500);margin-top:36px">
