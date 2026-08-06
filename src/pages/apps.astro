@@ -1,0 +1,281 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { apps, platforms, categories } from '../data/apps';
+
+const visibleApps = apps.filter(d => !d.hidden);
+const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
+---
+
+<Layout
+  title="雪球·智慧 — APP 拉新：下载注册就能赚的 0 门槛副业"
+  description="宝妈 0 门槛副业：推广高佣金 APP 拉新任务，朋友下载注册你拿佣金。复用雪球·智慧推广码与两级分润，邀请越多赚越多。"
+  image="/deals/01-guangdian-liuliangka.png"
+>
+  <style is:global>
+  :root{
+    --em-50:#ecfdf5;--em-100:#d1fae5;--em-200:#a7f3d0;--em-300:#6ee7b7;--em-400:#34d399;
+    --em-500:#10b981;--em-600:#059669;--em-700:#047857;--em-800:#065f46;--em-900:#064e3b;--em-950:#022c22;
+    --ink-900:#0b1220;--ink-800:#172033;--ink-700:#334155;--ink-600:#475569;--ink-500:#64748b;--ink-400:#94a3b8;--ink-300:#cbd5e1;--ink-200:#e2e8f0;--ink-100:#f1f5f9;--ink-50:#f8fafc;
+    --bg:#ffffff;--bg-soft:#f7faf9;--bg-tint:#f3fbf8;--line:#e8edf2;
+    --r-sm:10px;--r:14px;--r-lg:18px;--r-xl:24px;
+    --sh-sm:0 1px 2px rgba(15,23,42,.05),0 1px 3px rgba(15,23,42,.06);
+    --sh-md:0 4px 12px rgba(15,23,42,.06),0 10px 24px rgba(15,23,42,.08);
+    --sh-lg:0 10px 30px rgba(15,23,42,.08),0 24px 60px rgba(15,23,42,.10);
+    --font:'Inter',-apple-system,BlinkMacSystemFont,'PingFang SC','Hirino Sans GB','Microsoft YaHei',system-ui,sans-serif;
+    --maxw:1280px;
+  }
+  .deals-hero{padding:110px 0 40px;background:radial-gradient(120% 80% at 88% 8%,rgba(16,185,129,.10),transparent 55%),var(--bg)}
+  .deals-hero .eyebrow{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--em-600);margin-bottom:16px;display:inline-flex;align-items:center;gap:8px}
+  .deals-hero .eyebrow::before{content:"";width:20px;height:2px;background:var(--em-500);border-radius:2px}
+  .deals-hero h1{font-size:clamp(32px,4.2vw,50px);font-weight:800;letter-spacing:-.035em;line-height:1.08;color:var(--ink-900)}
+  .deals-hero .lead{font-size:clamp(15px,1.3vw,17px);color:var(--ink-600);line-height:1.65;margin-top:16px;max-width:640px}
+
+  .filters{padding:28px 0 18px;position:sticky;top:0;z-index:20;background:linear-gradient(180deg,var(--bg) 70%,rgba(255,255,255,0) 100%);backdrop-filter:blur(8px)}
+  .filter-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
+  .filter-row:last-child{margin-bottom:0}
+  .filter-label{font-size:13px;font-weight:600;color:var(--ink-500);margin-right:4px;white-space:nowrap}
+  .filter-btn{font-size:13.5px;font-weight:500;color:var(--ink-600);background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 15px;cursor:pointer;transition:all .2s;white-space:nowrap}
+  .filter-btn:hover{border-color:var(--em-300);color:var(--em-700)}
+  .filter-btn.active{background:var(--em-600);border-color:var(--em-600);color:#fff;box-shadow:0 4px 12px rgba(5,150,105,.22)}
+
+  .deals-toolbar{display:flex;align-items:center;justify-content:space-between;margin:10px 0 18px}
+  .deals-count{font-size:14px;color:var(--ink-500)}
+  .deals-count b{color:var(--ink-900);font-weight:700}
+
+  .deals-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:18px;padding:0 0 48px}
+  .deal{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh-sm);transition:transform .25s cubic-bezier(.22,.61,.36,1),box-shadow .25s;display:flex;flex-direction:column}
+  .deal:hover{transform:translateY(-4px);box-shadow:var(--sh-md)}
+  .deal.hidden{display:none}
+  .deal .thumb{aspect-ratio:3/4;background:var(--bg-soft);overflow:hidden;position:relative}
+  .deal .thumb img{width:100%;height:100%;object-fit:cover}
+  .deal .thumb-ph{aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;font-size:72px;font-weight:800;color:#fff;background:linear-gradient(135deg,var(--em-500),var(--em-700))}
+  .deal .body{padding:12px 13px 14px;display:flex;flex-direction:column;gap:7px;flex:1}
+  .deal .meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .deal .rate{font-size:11px;font-weight:700;color:var(--em-700);background:var(--em-50);border-radius:5px;padding:3px 7px}
+  .deal .cat{font-size:11px;font-weight:500;color:var(--ink-500);background:var(--ink-100);border-radius:5px;padding:3px 7px}
+  .deal h3{font-size:14px;font-weight:600;color:var(--ink-900);line-height:1.45;letter-spacing:-.01em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:40px}
+  .deal .slogan{font-size:12.5px;font-weight:500;color:var(--em-700);line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:32px}
+  .deal .tags{display:flex;flex-wrap:wrap;gap:5px}
+  .deal .tags span{font-size:11px;color:var(--ink-500);background:var(--bg-soft);border:1px solid var(--line);border-radius:5px;padding:2px 6px}
+  .deal .price-row{display:flex;align-items:baseline;justify-content:space-between;margin-top:auto;padding-top:6px}
+  .deal .price{font-size:16px;font-weight:800;color:var(--em-700);letter-spacing:-.02em}
+  .deal .go{font-size:12px;font-weight:600;color:#fff;background:var(--em-600);border-radius:7px;padding:6px 12px;transition:background .2s}
+  .deal .go:hover{background:var(--em-700)}
+
+  @media(max-width:1100px){.deals-grid{grid-template-columns:repeat(5,1fr);gap:16px}}
+  @media(max-width:900px){.deals-grid{grid-template-columns:repeat(4,1fr);gap:14px}}
+  @media(max-width:680px){.deals-grid{grid-template-columns:repeat(3,1fr);gap:12px}.deal .body{padding:10px 11px 12px}.deal h3{font-size:13px;min-height:36px}}
+  @media(max-width:420px){.deals-grid{grid-template-columns:repeat(2,1fr);gap:10px}}
+
+  .empty-state{text-align:center;padding:64px 20px;color:var(--ink-500)}
+  .empty-state.hidden{display:none}
+
+  .pagination{display:flex;justify-content:center;align-items:center;gap:8px;padding:16px 0 48px;flex-wrap:wrap}
+  .pagination button{font-size:13.5px;font-weight:500;color:var(--ink-600);background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 14px;cursor:pointer;transition:all .2s}
+  .pagination button:hover{border-color:var(--em-300);color:var(--em-700)}
+  .pagination button.active{background:var(--em-600);border-color:var(--em-600);color:#fff}
+  .pagination button:disabled{opacity:.45;cursor:not-allowed}
+  .pagination .page-info{font-size:13.5px;color:var(--ink-500);padding:0 8px}
+
+  .disclose{background:var(--bg-soft);border:1px solid var(--line);border-radius:var(--r-lg);padding:26px 30px;margin:0 0 56px}
+  .disclose h4{color:var(--ink-900);font-size:16px;margin-bottom:10px}
+  .disclose p{font-size:14px;color:var(--ink-600);line-height:1.65}
+  </style>
+
+  <section class="deals-hero">
+    <div class="container">
+      <span class="eyebrow">APP 拉新赚钱</span>
+      <h1>下载注册就能赚，<br/>0 门槛宝妈副业</h1>
+      <p class="lead">不用囤货、不用写软文。把高佣金 APP 的拉新任务分享给朋友，对方下载注册并完成首单，你立刻拿一笔「按注册或首单付费」的佣金。复用你的雪球·智慧推广码与两级分润，邀请越多赚越多。</p>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="filters">
+      <div class="filter-row">
+        <span class="filter-label">渠道</span>
+        {platforms.map(p => (
+          <button class={`filter-btn platform-btn ${p.key === 'all' ? 'active' : ''}`} data-type="platform" data-value={p.key}>{p.label}</button>
+        ))}
+      </div>
+      <div class="filter-row">
+        <span class="filter-label">类型</span>
+        {categories.map(c => (
+          <button class={`filter-btn category-btn ${c.key === 'all' ? 'active' : ''}`} data-type="category" data-value={c.key}>{c.label}</button>
+        ))}
+      </div>
+    </div>
+
+    <div class="deals-toolbar">
+      <div class="deals-count">共 <b id="deals-count">{visibleApps.length}</b> 个拉新任务</div>
+    </div>
+
+    <div class="deals-grid" id="deals-grid">
+      {visibleApps.map((d, idx) => (
+        <article class:list={['deal', d.hidden && 'hidden']} data-platform={d.platform} data-category={d.category} data-index={idx}>
+          <a href={d.url} target="_blank" rel="nofollow noopener" class="thumb">
+            {d.img ? <img src={d.img} alt={d.name} loading="lazy" width="600" height="800" /> : <div class="thumb-ph">{(d.name || '?').slice(0, 1)}</div>}
+          </a>
+          <div class="body">
+            <div class="meta">
+              <span class="rate">{d.rate || '0门槛'}</span>
+              <span class="cat">{d.category}</span>
+            </div>
+            <h3><a href={d.url} target="_blank" rel="nofollow noopener" style="color:inherit;text-decoration:none">{d.name}</a></h3>
+            <p class="slogan">{d.slogan}</p>
+            <div class="tags">
+              {d.tags.map(t => <span>{t}</span>)}
+            </div>
+            <div class="price-row">
+              <span class="price">{d.price}</span>
+              <a class="go" href={d.url} target="_blank" rel="nofollow noopener">去做任务</a>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <div class="pagination" id="pagination"></div>
+
+    <div class="empty-state" id="empty-state">
+      <p>该筛选条件下暂无任务，换个渠道或类型看看。</p>
+    </div>
+
+    <div class="disclose">
+      <h4>关于 APP 拉新佣金</h4>
+      <p>本页任务均为「按注册或首单付费」的拉新佣金。朋友通过你的专属链接下载注册并完成要求，你拿佣金，<b>不影响对方任何权益</b>。佣金通过雪球·智慧后台两级分润结算：你自己推拿大头（自推 50%），你下级推你拿一级 30%、下下级推你拿二级 10%，平台留 10%。结算明细由各渠道后台导出后导入 snowballwise 后台自动分账（当前为示例任务，接渠道后开放真实链接与佣金）。</p>
+    </div>
+  </div>
+
+  <script is:inline define:vars={{ API_BASE }}>
+    (function(){
+      // 带推荐码的任务点击追踪：若访客来自某推广码，上报「谁点了什么」
+      try {
+        const REF = localStorage.getItem('sb_ref') || '';
+        if (REF) {
+          document.querySelectorAll('.deal a[href]').forEach(a => {
+            a.addEventListener('click', () => {
+              const sku = a.getAttribute('href') || '';
+              const card = a.closest('.deal');
+              const name = (card && card.querySelector('h3') ? card.querySelector('h3').textContent : '') || '';
+              try {
+                navigator.sendBeacon(API_BASE + '/api/track',
+                  new URLSearchParams({ promoCode: REF, sku, name }));
+              } catch (e) {}
+            });
+          });
+        }
+      } catch (e) {}
+
+      const platformBtns = document.querySelectorAll('.platform-btn');
+      const categoryBtns = document.querySelectorAll('.category-btn');
+      const cards = Array.from(document.querySelectorAll('.deal'));
+      const countEl = document.getElementById('deals-count');
+      const emptyState = document.getElementById('empty-state');
+      const paginationEl = document.getElementById('pagination');
+      let activePlatform = 'all';
+      let activeCategory = 'all';
+      let currentPage = 1;
+      const pageSize = 30;
+
+      function getMatched() {
+        return cards.filter(card => {
+          const p = card.dataset.platform;
+          const c = card.dataset.category;
+          const matchP = activePlatform === 'all' || p === activePlatform;
+          const matchC = activeCategory === 'all' || c === activeCategory;
+          return matchP && matchC;
+        });
+      }
+
+      function renderPagination(total) {
+        if (!paginationEl) return;
+        const totalPages = Math.ceil(total / pageSize) || 1;
+        if (totalPages <= 1) {
+          paginationEl.innerHTML = '';
+          return;
+        }
+        if (currentPage > totalPages) currentPage = totalPages;
+        if (currentPage < 1) currentPage = 1;
+
+        let html = '';
+        html += `<button class="prev" ${currentPage === 1 ? 'disabled' : ''}>上一页</button>`;
+        for (let i = 1; i <= totalPages; i++) {
+          html += `<button class="page-num ${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</button>`;
+        }
+        html += `<button class="next" ${currentPage === totalPages ? 'disabled' : ''}>下一页</button>`;
+        html += `<span class="page-info">${currentPage} / ${totalPages}</span>`;
+        paginationEl.innerHTML = html;
+
+        paginationEl.querySelectorAll('.page-num').forEach(btn => {
+          btn.addEventListener('click', () => {
+            currentPage = parseInt(btn.dataset.page, 10);
+            update();
+          });
+        });
+        const prevBtn = paginationEl.querySelector('.prev');
+        const nextBtn = paginationEl.querySelector('.next');
+        if (prevBtn) {
+          prevBtn.addEventListener('click', () => {
+            if (currentPage > 1) { currentPage--; update(); }
+          });
+        }
+        if (nextBtn) {
+          nextBtn.addEventListener('click', () => {
+            if (currentPage < totalPages) { currentPage++; update(); }
+          });
+        }
+      }
+
+      function update() {
+        const matched = getMatched();
+        const total = matched.length;
+        const totalPages = Math.ceil(total / pageSize) || 1;
+        if (currentPage > totalPages) currentPage = totalPages;
+        if (currentPage < 1) currentPage = 1;
+        const start = (currentPage - 1) * pageSize;
+        const end = start + pageSize;
+
+        cards.forEach(card => card.classList.add('hidden'));
+        matched.forEach((card, idx) => {
+          if (idx >= start && idx < end) {
+            card.classList.remove('hidden');
+          }
+        });
+
+        countEl.textContent = total;
+        emptyState.classList.toggle('hidden', total > 0);
+        renderPagination(total);
+        if (matched.length && matched[start]) {
+          matched[start].scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+
+      function setActive(btns, key) {
+        btns.forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.value === key);
+        });
+      }
+
+      platformBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          activePlatform = btn.dataset.value;
+          currentPage = 1;
+          setActive(platformBtns, activePlatform);
+          update();
+        });
+      });
+
+      categoryBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          activeCategory = btn.dataset.value;
+          currentPage = 1;
+          setActive(categoryBtns, activeCategory);
+          update();
+        });
+      });
+
+      update();
+    })();
+  </script>
+</Layout>
