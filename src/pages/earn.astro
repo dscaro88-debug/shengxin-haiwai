@@ -247,6 +247,22 @@ const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
     let TOKEN = localStorage.getItem('sb_token') || '';
     let USER = null;
 
+    // 自动填充推荐人推广码：从分享链接 ?ref= 带入，并记忆到本地
+    (function initRef(){
+      try {
+        const ref = new URLSearchParams(location.search).get('ref');
+        if (ref) {
+          localStorage.setItem('sb_ref', ref);
+          const inp = document.getElementById('reg-ref');
+          if (inp) inp.value = ref;
+        } else {
+          const saved = localStorage.getItem('sb_ref');
+          const inp = document.getElementById('reg-ref');
+          if (saved && inp && !inp.value) inp.value = saved;
+        }
+      } catch (e) {}
+    })();
+
     function showError(elId, msg) {
       const el = document.getElementById(elId);
       el.textContent = msg;

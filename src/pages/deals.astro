@@ -4,6 +4,7 @@ import Layout from '../layouts/Layout.astro';
 import { deals, platforms, categories, platformLabel } from '../data/deals';
 
 const visibleDeals = deals.filter(d => !d.hidden);
+const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
 
 ---
 
@@ -147,8 +148,26 @@ const visibleDeals = deals.filter(d => !d.hidden);
     </div>
   </div>
 
-  <script is:inline>
+  <script is:inline define:vars={{ API_BASE }}>
     (function(){
+      // 带推荐码的商品点击追踪：若访客来自某推广码，上报「谁点了什么」
+      try {
+        const REF = localStorage.getItem('sb_ref') || '';
+        if (REF) {
+          document.querySelectorAll('.deal a[href]').forEach(a => {
+            a.addEventListener('click', () => {
+              const sku = a.getAttribute('href') || '';
+              const card = a.closest('.deal');
+              const name = (card && card.querySelector('h3') ? card.querySelector('h3').textContent : '') || '';
+              try {
+                navigator.sendBeacon(API_BASE + '/api/track',
+                  new URLSearchParams({ promoCode: REF, sku, name }));
+              } catch (e) {}
+            });
+          });
+        }
+      } catch (e) {}
+
       const platformBtns = document.querySelectorAll('.platform-btn');
       const categoryBtns = document.querySelectorAll('.category-btn');
       const cards = Array.from(document.querySelectorAll('.deal'));
