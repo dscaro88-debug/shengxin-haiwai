@@ -67,6 +67,11 @@ const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
     .err.on{display:block}
     .ok{color:#047857;font-size:14px;margin-top:8px;display:none;background:#ecfdf5;border:1px solid #a7f3d0;border-radius:8px;padding:10px 12px}
     .ok.on{display:block}
+    .success-box{margin:24px 0;padding:24px;background:#ecfdf5;border:1px solid #a7f3d0;border-radius:14px;display:none}
+    .success-box.on{display:block}
+    .success-box h4{margin:0 0 12px;color:#065f46;font-size:18px}
+    .success-box .big-code{font-size:28px;font-weight:800;color:#047857;font-family:'SF Mono',Monaco,monospace;letter-spacing:.05em}
+    .success-box .share-link{font-size:13px;color:#065f46;word-break:break-all;margin-top:8px;display:block}
     .hint{font-size:13px;color:var(--ink-500);margin-top:10px;line-height:1.7}
 
     /* 已登录面板 */
@@ -142,6 +147,14 @@ const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
     <div class="redline">
       <b>🔴 两级红线（不可降级）：</b>系统只记录「推荐人 → 被推荐人」两级映射，超出两级即触传销红线，永不构建。你推荐 A（一级）、A 推荐 B（二级），B 之下不再计佣。这是 snowballwise 的合规底线，已写进分佣引擎强制拦截。
     </div>
+  </section>
+
+  <!-- 全局成功提示（注册成功后即使 dashboard 渲染失败也能看到） -->
+  <section id="global-success" class="success-box">
+    <h4>🎉 注册成功！你的推广码：</h4>
+    <div class="big-code" id="global-code">--</div>
+    <div class="share-link" id="global-link">--</div>
+    <p style="margin:12px 0 0;color:#065f46;font-size:14px">把这个链接分享到小红书/朋友圈，朋友通过它下单，你自动赚返现。</p>
   </section>
 
   <!-- 注册/登录面板 -->
@@ -325,6 +338,7 @@ const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
       localStorage.removeItem('sb_token');
       document.getElementById('auth-panel').classList.remove('hidden');
       document.getElementById('dash-panel').classList.add('hidden');
+      document.getElementById('global-success').classList.remove('on');
     }
 
     function copyLink() {
@@ -335,15 +349,28 @@ const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
       });
     }
 
+    function showGlobalSuccess() {
+      const box = document.getElementById('global-success');
+      document.getElementById('global-code').textContent = USER.promoCode;
+      document.getElementById('global-link').textContent = USER.referralLink;
+      box.classList.add('on');
+      box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
     function renderDash() {
-      document.getElementById('auth-panel').classList.add('hidden');
-      document.getElementById('dash-panel').classList.remove('hidden');
-      document.getElementById('dash-email').textContent = USER.email;
-      document.getElementById('dash-code').textContent = USER.promoCode;
-      document.getElementById('dash-link').textContent = USER.referralLink;
-      document.getElementById('dash-balance').textContent = USER.balance.toFixed(2);
-      document.getElementById('dash-depth').textContent = USER.depth;
-      loadLedger();
+      try {
+        document.getElementById('auth-panel').classList.add('hidden');
+        document.getElementById('dash-panel').classList.remove('hidden');
+        document.getElementById('dash-email').textContent = USER.email;
+        document.getElementById('dash-code').textContent = USER.promoCode;
+        document.getElementById('dash-link').textContent = USER.referralLink;
+        document.getElementById('dash-balance').textContent = USER.balance.toFixed(2);
+        document.getElementById('dash-depth').textContent = USER.depth;
+        loadLedger();
+      } catch (err) {
+        console.error('dashboard 渲染失败，启用兜底显示', err);
+      }
+      showGlobalSuccess();
     }
 
     async function loadLedger() {
