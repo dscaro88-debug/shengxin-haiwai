@@ -177,6 +177,10 @@ const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
             <label style="font-size:13px;font-weight:600;color:var(--ink-700);flex:0 0 auto">推荐人推广码（可选）</label>
             <input type="text" id="reg-ref" placeholder="留空表示自己注册" />
           </div>
+          <div>
+            <label>收款方式（微信 / 支付宝账号，<span style="color:var(--em-700)">返现时给你打款用</span>）</label>
+            <input type="text" id="reg-pay" placeholder="例如：微信 wxid_xxx 或 支付宝 138xxxx" />
+          </div>
           <button class="btn" type="submit" id="reg-btn">立即注册</button>
           <div class="err" id="reg-err"></div>
           <div class="ok" id="reg-ok">注册成功！正在生成你的推广码…</div>
@@ -216,6 +220,20 @@ const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
         <div class="lab">推广层级</div>
         <div class="val">第 <span id="dash-depth">0</span> 级</div>
       </div>
+      <div>
+        <div class="lab">收款方式（返现打款用）</div>
+        <div class="val" id="dash-pay" style="font-size:15px;word-break:break-all;color:var(--ink-900)">未设置</div>
+      </div>
+    </div>
+
+    <div id="pay-edit" class="hidden" style="margin:0 0 16px;background:var(--bg-soft);border:1px solid var(--line);border-radius:12px;padding:16px">
+      <label style="font-size:13px;font-weight:600;color:var(--ink-700)">填写微信或支付宝账号（CARO 据此给你打款）</label>
+      <input id="pay-input" type="text" placeholder="微信 wxid_xxx 或 支付宝 138xxxx" style="border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:15px;width:100%;margin-top:8px;outline:none" />
+      <div style="display:flex;gap:10px;margin-top:12px;align-items:center">
+        <button class="btn" type="button" id="pay-save" style="padding:10px 22px">保存</button>
+        <span class="err" id="pay-err" style="margin:0"></span>
+        <span class="ok" id="pay-ok" style="margin:0">已保存 ✓</span>
+      </div>
     </div>
 
     <div class="promo-box">
@@ -236,6 +254,7 @@ const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
     </div>
 
     <div class="actions">
+      <button class="small" id="dash-setpay">设置 / 修改收款方式</button>
       <button class="small" id="dash-copy-action">复制推广链接</button>
       <button class="small" id="dash-logout">退出登录</button>
       <a class="small" href="/deals" style="text-decoration:none;display:inline-block">去看优惠商品 →</a>
@@ -306,6 +325,7 @@ const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
       const email = document.getElementById('reg-email').value.trim();
       const password = document.getElementById('reg-password').value;
       const ref = document.getElementById('reg-ref').value.trim();
+      const pay = document.getElementById('reg-pay').value.trim();
       if (!email || !password || password.length < 6) {
         showError('reg-err', '请填写有效邮箱和至少 6 位密码。');
         return;
@@ -314,6 +334,7 @@ const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
       try {
         const body = { email, password };
         if (ref) body.referralCode = ref;
+        if (pay) body.payAccount = pay;
         showOk('reg-ok', '正在连接服务器，请稍候…');
         const out = await callApi('/api/register', { method: 'POST', body: JSON.stringify(body) });
         TOKEN = out.token;
@@ -373,6 +394,20 @@ const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
       box.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
+    async function savePay() {
+      const pay = document.getElementById('pay-input').value.trim();
+      if (!pay) { showError('pay-err', '请填写微信或支付宝账号'); return; }
+      hideError('pay-err');
+      try {
+        const out = await callApi('/api/profile', { method: 'POST', body: JSON.stringify({ payAccount: pay }) });
+        USER = out.user;
+        document.getElementById('dash-pay').textContent = USER.payAccount;
+        document.getElementById('dash-pay').style.color = 'var(--ink-900)';
+        document.getElementById('pay-edit').classList.add('hidden');
+        showOk('pay-ok', '收款方式已保存 ✓');
+      } catch (e) { showError('pay-err', '保存失败：' + e.message); }
+    }
+
     function renderDash() {
       try {
         document.getElementById('auth-panel').classList.add('hidden');
@@ -382,6 +417,8 @@ const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
         document.getElementById('dash-link').textContent = USER.referralLink;
         document.getElementById('dash-balance').textContent = USER.balance.toFixed(2);
         document.getElementById('dash-depth').textContent = USER.depth;
+        document.getElementById('dash-pay').textContent = USER.payAccount || '⚠️ 未设置，返现前请先填写';
+        document.getElementById('dash-pay').style.color = USER.payAccount ? 'var(--ink-900)' : '#b91c1c';
         loadLedger();
       } catch (err) {
         console.error('dashboard 渲染失败，启用兜底显示', err);
@@ -418,6 +455,12 @@ const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
     document.getElementById('dash-copy-main').addEventListener('click', copyLink);
     document.getElementById('dash-copy-action').addEventListener('click', copyLink);
     document.getElementById('dash-logout').addEventListener('click', doLogout);
+    document.getElementById('dash-setpay').addEventListener('click', () => {
+      const box = document.getElementById('pay-edit');
+      box.classList.toggle('hidden');
+      if (!box.classList.contains('hidden')) document.getElementById('pay-input').focus();
+    });
+    document.getElementById('pay-save').addEventListener('click', savePay);
 
     // 兼容内联事件（万一其他页面/调试用到）
     window.doRegister = doRegister;
