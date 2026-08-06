@@ -58,12 +58,15 @@ const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
     .auth-form input:focus{border-color:var(--em-500)}
     .auth-form .row-ref{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-500)}
     .auth-form .row-ref input{flex:1}
-    .btn{display:inline-block;background:var(--em-500);color:#fff;font-weight:600;padding:13px 28px;border-radius:12px;font-size:15px;border:0;cursor:pointer}
+    .btn{display:inline-block;background:var(--em-500);color:#fff;font-weight:600;padding:13px 28px;border-radius:12px;font-size:15px;border:0;cursor:pointer;position:relative}
     .btn:hover{background:var(--em-600)}
+    .btn:disabled{opacity:.7;cursor:not-allowed}
     .btn.ghost{background:transparent;border:1px solid var(--em-500);color:var(--em-700);margin-left:10px}
     .btn.ghost:hover{background:#f0fdf4}
-    .err{color:#b91c1c;font-size:14px;margin-top:8px;display:none}
+    .err{color:#b91c1c;font-size:14px;margin-top:8px;display:none;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:10px 12px}
     .err.on{display:block}
+    .ok{color:#047857;font-size:14px;margin-top:8px;display:none;background:#ecfdf5;border:1px solid #a7f3d0;border-radius:8px;padding:10px 12px}
+    .ok.on{display:block}
     .hint{font-size:13px;color:var(--ink-500);margin-top:10px;line-height:1.7}
 
     /* 已登录面板 */
@@ -162,9 +165,10 @@ const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
         <label style="font-size:13px;font-weight:600;color:var(--ink-700);flex:0 0 auto">推荐人推广码（可选）</label>
         <input type="text" id="reg-ref" placeholder="留空表示自己注册" />
       </div>
-      <button class="btn" type="submit">立即注册</button>
+      <button class="btn" type="submit" id="reg-btn">立即注册</button>
       <div class="err" id="reg-err"></div>
-      <div class="hint">注册即同意：你必须年满 18 周岁，仅限中国大陆境内参与；分享链接应发布在允许「返利 / 联盟营销」的渠道。</div>
+      <div class="ok" id="reg-ok">注册成功！正在生成你的推广码…</div>
+      <div class="hint">注册即同意：你必须年满 18 周岁，仅限中国大陆境内参与；分享链接应发布在允许「返利 / 联盟营销」的渠道。注册后页面会直接显示推广码，无需等待邮件。</div>
     </form>
 
     <!-- 登录表单 -->
@@ -177,7 +181,7 @@ const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
         <label>密码</label>
         <input type="password" id="login-password" placeholder="******" required />
       </div>
-      <button class="btn" type="submit">登录</button>
+      <button class="btn" type="submit" id="login-btn">登录</button>
       <div class="err" id="login-err"></div>
     </form>
   </section>
@@ -236,45 +240,84 @@ const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
       const el = document.getElementById(elId);
       el.textContent = msg;
       el.classList.add('on');
-      setTimeout(() => el.classList.remove('on'), 5000);
+      const ok = document.getElementById(elId.replace('-err','-ok'));
+      if (ok) ok.classList.remove('on');
+    }
+    function hideError(elId) {
+      document.getElementById(elId).classList.remove('on');
+    }
+    function showOk(elId, msg) {
+      const el = document.getElementById(elId);
+      el.textContent = msg;
+      el.classList.add('on');
+    }
+
+    function setLoading(id, loading) {
+      const btn = document.getElementById(id);
+      btn.disabled = loading;
+      btn.dataset.original = btn.dataset.original || btn.textContent;
+      btn.textContent = loading ? '处理中…' : btn.dataset.original;
     }
 
     async function callApi(path, opts = {}) {
       const headers = { 'Content-Type': 'application/json' };
       if (TOKEN) headers.Authorization = 'Bearer ' + TOKEN;
-      const r = await fetch(API + path, { ...opts, headers: { ...headers, ...(opts.headers || {}) } });
+      let r;
+      try {
+        r = await fetch(API + path, { ...opts, headers: { ...headers, ...(opts.headers || {}) } });
+      } catch (netErr) {
+        throw new Error('网络连接失败，请检查网络或换个浏览器（避免微信内置浏览器）重试。');
+      }
       const data = await r.json().catch(() => ({}));
-      if (!r.ok) throw new Error(data.error || r.statusText);
+      if (!r.ok) throw new Error(data.error || ('服务器错误 ' + r.status));
       return data;
     }
 
     async function doRegister(e) {
       e.preventDefault();
+      hideError('reg-err');
       const email = document.getElementById('reg-email').value.trim();
       const password = document.getElementById('reg-password').value;
       const ref = document.getElementById('reg-ref').value.trim();
+      if (!email || !password || password.length < 6) {
+        showError('reg-err', '请填写有效邮箱和至少 6 位密码。');
+        return;
+      }
+      setLoading('reg-btn', true);
       try {
         const body = { email, password };
         if (ref) body.referralCode = ref;
+        showOk('reg-ok', '正在连接服务器，请稍候…');
         const out = await callApi('/api/register', { method: 'POST', body: JSON.stringify(body) });
         TOKEN = out.token;
         localStorage.setItem('sb_token', TOKEN);
         USER = out.user;
+        showOk('reg-ok', '注册成功！推广码：' + USER.promoCode);
         renderDash();
-      } catch (e) { showError('reg-err', '注册失败：' + e.message); }
+      } catch (e) {
+        showError('reg-err', '注册失败：' + e.message);
+      } finally {
+        setLoading('reg-btn', false);
+      }
     }
 
     async function doLogin(e) {
       e.preventDefault();
+      hideError('login-err');
       const email = document.getElementById('login-email').value.trim();
       const password = document.getElementById('login-password').value;
+      setLoading('login-btn', true);
       try {
         const out = await callApi('/api/login', { method: 'POST', body: JSON.stringify({ email, password }) });
         TOKEN = out.token;
         localStorage.setItem('sb_token', TOKEN);
         USER = out.user;
         renderDash();
-      } catch (e) { showError('login-err', '登录失败：' + e.message); }
+      } catch (e) {
+        showError('login-err', '登录失败：' + e.message);
+      } finally {
+        setLoading('login-btn', false);
+      }
     }
 
     function doLogout() {
