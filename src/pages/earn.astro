@@ -47,12 +47,12 @@ const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
     .redline{margin-top:24px;background:#fff7ed;border:1px solid #fed7aa;border-radius:var(--r);padding:20px 24px;font-size:14px;color:#9a3412;line-height:1.7}
     .redline b{color:#7c2d12}
 
-    /* 注册 / 登录面板 */
+    /* 注册 / 登录面板：左右分栏同时显示 */
     .auth-wrap{margin-top:40px;background:linear-gradient(135deg,#f0fdf4,#ecfeff);border:1px solid #d1fae5;border-radius:var(--r-lg);padding:36px}
-    .auth-tabs{display:flex;gap:8px;margin-bottom:22px}
-    .auth-tabs button{flex:1;background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px;font-size:15px;font-weight:600;color:var(--ink-700);cursor:pointer}
-    .auth-tabs button.on{background:var(--em-600);color:#fff;border-color:var(--em-600)}
-    .auth-form{display:flex;flex-direction:column;gap:14px;max-width:480px}
+    .auth-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start}
+    .auth-col{display:flex;flex-direction:column;gap:16px}
+    .auth-heading{background:var(--em-600);color:#fff;border:1px solid var(--em-600);border-radius:10px;padding:12px;font-size:15px;font-weight:600;text-align:center}
+    .auth-form{display:flex;flex-direction:column;gap:14px}
     .auth-form label{font-size:13px;font-weight:600;color:var(--ink-700)}
     .auth-form input{border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:15px;background:#fff;outline:none}
     .auth-form input:focus{border-color:var(--em-500)}
@@ -97,7 +97,7 @@ const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
     .actions .small:hover{border-color:var(--em-500);color:var(--em-700)}
     .hidden{display:none}
 
-    @media(max-width:760px){.steps,.split,.dash .kv{grid-template-columns:1fr}.auth-tabs{flex-direction:column}}
+    @media(max-width:760px){.steps,.split,.dash .kv,.auth-grid{grid-template-columns:1fr}}
   </style>
 
   <section class="hero">
@@ -157,48 +157,51 @@ const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
     <p style="margin:12px 0 0;color:#065f46;font-size:14px">把这个链接分享到小红书/朋友圈，朋友通过它下单，你自动赚返现。</p>
   </section>
 
-  <!-- 注册/登录面板 -->
+  <!-- 注册/登录面板：左右分栏同时显示 -->
   <section id="auth-panel" class="auth-wrap">
-    <div class="auth-tabs">
-      <button type="button" id="tab-register" class="on">注册拿推广码</button>
-      <button type="button" id="tab-login">已有账号？登录</button>
+    <div class="auth-grid">
+      <!-- 左栏：注册 -->
+      <div class="auth-col">
+        <div class="auth-heading">注册拿推广码</div>
+        <form id="form-register" class="auth-form">
+          <h3 style="margin:0 0 18px;font-size:20px;color:var(--ink-900)">注册账号，领取推广码</h3>
+          <div>
+            <label>邮箱（用作账号 + 找回密码）</label>
+            <input type="email" id="reg-email" placeholder="you@example.com" required />
+          </div>
+          <div>
+            <label>密码（至少 6 位）</label>
+            <input type="password" id="reg-password" placeholder="******" minlength="6" required />
+          </div>
+          <div class="row-ref">
+            <label style="font-size:13px;font-weight:600;color:var(--ink-700);flex:0 0 auto">推荐人推广码（可选）</label>
+            <input type="text" id="reg-ref" placeholder="留空表示自己注册" />
+          </div>
+          <button class="btn" type="submit" id="reg-btn">立即注册</button>
+          <div class="err" id="reg-err"></div>
+          <div class="ok" id="reg-ok">注册成功！正在生成你的推广码…</div>
+          <div class="hint">注册即同意：你必须年满 18 周岁，仅限中国大陆境内参与；分享链接应发布在允许「返利 / 联盟营销」的渠道。注册后页面会直接显示推广码，无需等待邮件。</div>
+        </form>
+      </div>
+
+      <!-- 右栏：登录 -->
+      <div class="auth-col">
+        <div class="auth-heading">已有账号？登录</div>
+        <form id="form-login" class="auth-form">
+          <h3 style="margin:0 0 18px;font-size:20px;color:var(--ink-900)">欢迎回来，请登录</h3>
+          <div>
+            <label>邮箱</label>
+            <input type="email" id="login-email" placeholder="you@example.com" required />
+          </div>
+          <div>
+            <label>密码</label>
+            <input type="password" id="login-password" placeholder="******" required />
+          </div>
+          <button class="btn" type="submit" id="login-btn">登录</button>
+          <div class="err" id="login-err"></div>
+        </form>
+      </div>
     </div>
-
-    <!-- 注册表单 -->
-    <form id="form-register" class="auth-form">
-      <h3 style="margin:0 0 18px;font-size:20px;color:var(--ink-900)">注册账号，领取推广码</h3>
-      <div>
-        <label>邮箱（用作账号 + 找回密码）</label>
-        <input type="email" id="reg-email" placeholder="you@example.com" required />
-      </div>
-      <div>
-        <label>密码（至少 6 位）</label>
-        <input type="password" id="reg-password" placeholder="******" minlength="6" required />
-      </div>
-      <div class="row-ref">
-        <label style="font-size:13px;font-weight:600;color:var(--ink-700);flex:0 0 auto">推荐人推广码（可选）</label>
-        <input type="text" id="reg-ref" placeholder="留空表示自己注册" />
-      </div>
-      <button class="btn" type="submit" id="reg-btn">立即注册</button>
-      <div class="err" id="reg-err"></div>
-      <div class="ok" id="reg-ok">注册成功！正在生成你的推广码…</div>
-      <div class="hint">注册即同意：你必须年满 18 周岁，仅限中国大陆境内参与；分享链接应发布在允许「返利 / 联盟营销」的渠道。注册后页面会直接显示推广码，无需等待邮件。</div>
-    </form>
-
-    <!-- 登录表单 -->
-    <form id="form-login" class="auth-form hidden">
-      <h3 style="margin:0 0 18px;font-size:20px;color:var(--ink-900)">欢迎回来，请登录</h3>
-      <div>
-        <label>邮箱</label>
-        <input type="email" id="login-email" placeholder="you@example.com" required />
-      </div>
-      <div>
-        <label>密码</label>
-        <input type="password" id="login-password" placeholder="******" required />
-      </div>
-      <button class="btn" type="submit" id="login-btn">登录</button>
-      <div class="err" id="login-err"></div>
-    </form>
   </section>
 
   <!-- 已登录面板（默认隐藏） -->
@@ -243,13 +246,6 @@ const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
     const API = API_BASE;
     let TOKEN = localStorage.getItem('sb_token') || '';
     let USER = null;
-
-    function switchTab(name) {
-      document.getElementById('tab-register').classList.toggle('on', name === 'register');
-      document.getElementById('tab-login').classList.toggle('on', name === 'login');
-      document.getElementById('form-register').classList.toggle('hidden', name !== 'register');
-      document.getElementById('form-login').classList.toggle('hidden', name !== 'login');
-    }
 
     function showError(elId, msg) {
       const el = document.getElementById(elId);
@@ -401,8 +397,6 @@ const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
     }
 
     // 用 addEventListener 绑定事件，彻底避开 Astro IIFE / inline onclick 作用域问题
-    document.getElementById('tab-register').addEventListener('click', () => switchTab('register'));
-    document.getElementById('tab-login').addEventListener('click', () => switchTab('login'));
     document.getElementById('form-register').addEventListener('submit', doRegister);
     document.getElementById('form-login').addEventListener('submit', doLogin);
     document.getElementById('dash-copy-main').addEventListener('click', copyLink);
@@ -410,7 +404,6 @@ const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
     document.getElementById('dash-logout').addEventListener('click', doLogout);
 
     // 兼容内联事件（万一其他页面/调试用到）
-    window.switchTab = switchTab;
     window.doRegister = doRegister;
     window.doLogin = doLogin;
     window.copyLink = copyLink;
