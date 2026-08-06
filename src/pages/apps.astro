@@ -7,8 +7,8 @@ const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
 ---
 
 <Layout
-  title="雪球·智慧 — APP 拉新：下载注册就能赚的 0 门槛副业"
-  description="宝妈 0 门槛副业：推广高佣金 APP 拉新任务，朋友下载注册你拿佣金。复用雪球·智慧推广码与两级分润，邀请越多赚越多。"
+  title="雪球·智慧 — 网赚任务墙：正规平台拉新，下载注册就能赚"
+  description="宝妈 0 门槛副业：在雪球·智慧任务墙挑任务，帮抖音/美团/拼多多等大厂拉新注册，朋友按步骤完成你拿佣金。复用雪球·智慧推广码与两级分润，邀请越多赚越多。"
   image="/deals/01-guangdian-liuliangka.png"
 >
   <style is:global>
@@ -85,9 +85,9 @@ const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
 
   <section class="deals-hero">
     <div class="container">
-      <span class="eyebrow">APP 拉新赚钱</span>
-      <h1>下载注册就能赚，<br/>0 门槛宝妈副业</h1>
-      <p class="lead">不用囤货、不用写软文。把高佣金 APP 的拉新任务分享给朋友，对方下载注册并完成首单，你立刻拿一笔「按注册或首单付费」的佣金。复用你的雪球·智慧推广码与两级分润，邀请越多赚越多。</p>
+      <span class="eyebrow">网赚任务墙</span>
+      <h1>正规平台拉新，<br/>下载注册就能赚</h1>
+      <p class="lead">不用囤货、不用写软文。在任务墙里挑任务，把抖音/美团/拼多多等大厂的拉新链接分享给朋友，对方下载注册或完成首单，你立刻拿一笔「按注册或首单付费」的佣金。复用你的雪球·智慧推广码与两级分润，邀请越多赚越多。</p>
     </div>
   </section>
 
@@ -115,7 +115,7 @@ const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
     </div>
 
     <div class="deals-toolbar">
-      <div class="deals-count">共 <b id="deals-count">{visibleApps.length}</b> 个拉新任务</div>
+      <div class="deals-count">共 <b id="deals-count">{visibleApps.length}</b> 个网赚任务</div>
     </div>
 
     <div class="deals-grid" id="deals-grid">
@@ -145,14 +145,14 @@ const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
 
     <div class="pagination" id="pagination"></div>
 
-    <div class="empty-state" id="empty-state">
-      <p>该筛选条件下暂无任务，换个渠道或类型看看。</p>
-    </div>
+      <div class="empty-state" id="empty-state">
+        <p>该筛选条件下暂无任务，换个渠道或类型看看。</p>
+      </div>
 
-    <div class="disclose">
-      <h4>关于 APP 拉新佣金</h4>
-      <p>本页任务均为「按注册或首单付费」的拉新佣金。朋友通过你的专属链接下载注册并完成要求，你拿佣金，<b>不影响对方任何权益</b>。佣金通过雪球·智慧后台两级分润结算：你自己推拿大头（自推 50%），你下级推你拿一级 30%、下下级推你拿二级 10%，平台留 10%。结算明细由各渠道后台导出后导入 snowballwise 后台自动分账（当前为示例任务，接渠道后开放真实链接与佣金）。</p>
-    </div>
+      <div class="disclose">
+        <h4>关于网赚任务佣金</h4>
+        <p>本页任务均为「按注册或首单付费」的正规推广佣金——我们扮演各大商家/大厂的「线上市场推广部」，帮他们找真实新用户，平台从中抽取推广服务费。朋友通过你的专属链接下载注册或完成首单，你拿佣金，<b>不影响对方任何权益</b>。佣金通过雪球·智慧后台两级分润结算：你自己推拿大头（自推 50%），你下级推你拿一级 30%、下下级推你拿二级 10%，平台留 10%。结算明细由各渠道后台导出后导入 snowballwise 后台自动分账（当前为示例任务，接渠道后开放真实链接与佣金）。所有任务仅接入持牌/大厂官方渠道，不碰任何灰产。</p>
+      </div>
   </div>
 
   <script is:inline define:vars={{ API_BASE }}>
