@@ -1,0 +1,157 @@
+---
+title: 雪球·智慧 运营后台
+---
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>雪球·智慧 运营后台</title>
+  <style>
+    :root{--em-600:#059669;--em-700:#047857;--ink-900:#0b1220;--ink-600:#475569;--ink-500:#64748b;--line:#e8edf2;--bg:#f7faf9}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',system-ui,sans-serif;background:var(--bg);color:var(--ink-900);padding:32px}
+    .wrap{max-width:1100px;margin:0 auto}
+    h1{font-size:24px;margin:0 0 4px}
+    .sub{color:var(--ink-500);font-size:13px;margin-bottom:24px}
+    .login{background:#fff;border:1px solid var(--line);border-radius:16px;padding:28px;max-width:420px}
+    .login input{border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:15px;width:100%;margin-top:8px}
+    .login button{margin-top:14px;width:100%;background:var(--em-600);color:#fff;border:0;border-radius:10px;padding:12px;font-size:15px;font-weight:600;cursor:pointer}
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+    .stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px}
+    .stat .n{font-size:28px;font-weight:800}
+    .stat .l{font-size:12px;color:var(--ink-500);margin-top:4px}
+    table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;font-size:13px}
+    th,td{padding:11px 12px;text-align:left;border-bottom:1px solid var(--line)}
+    th{background:#f1f5f9;font-size:12px;color:var(--ink-500);text-transform:uppercase;letter-spacing:.04em}
+    td.mono{font-family:'SF Mono',Monaco,monospace}
+    .bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+    .bar button{background:#fff;border:1px solid var(--line);border-radius:9px;padding:9px 14px;font-size:13px;cursor:pointer}
+    .bar button:hover{border-color:var(--em-600);color:var(--em-700)}
+    .empty{padding:40px;text-align:center;color:var(--ink-500)}
+    .err{color:#b91c1c;font-size:13px;margin-top:8px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>雪球·智慧 运营后台</h1>
+    <div class="sub">注册用户、推广码、两级关系、点击与账本，全部沉淀在这里</div>
+
+    <div id="login" class="login">
+      <label style="font-size:13px;font-weight:600;color:var(--ink-600)">管理员口令（ADMIN_TOKEN）</label>
+      <input type="password" id="token" placeholder="在 Railway 环境变量设置" />
+      <button onclick="load()">进入后台</button>
+      <div class="err" id="err"></div>
+    </div>
+
+    <div id="dash" style="display:none">
+      <div class="bar">
+        <div style="font-size:14px;font-weight:600">实时数据</div>
+        <div>
+          <button onclick="toggleImport()">导入订单 CSV</button>
+          <button onclick="load()">刷新</button>
+          <button onclick="exportJson()">导出备份 JSON</button>
+          <button onclick="logout()">退出</button>
+        </div>
+      </div>
+      <div id="import-box" style="display:none;background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:20px">
+        <div style="font-size:13px;color:var(--ink-600);line-height:1.7;margin-bottom:10px">
+          从京东联盟 / 淘宝联盟后台导出订单报表，整理成 CSV 粘贴到下面。<br/>
+          表头必须是：<code>promo_code,order_amount,commission,source</code>（source 可填 jd / taobao / 渠道名）
+        </div>
+        <textarea id="csv" rows="6" style="width:100%;border:1px solid var(--line);border-radius:10px;padding:12px;font-size:13px;font-family:monospace"></textarea>
+        <div style="margin-top:10px">
+          <button onclick="importCsv()">导入并分账</button>
+          <span id="import-msg" style="font-size:13px;margin-left:12px"></span>
+        </div>
+      </div>
+      <div class="stats" id="stats"></div>
+      <table>
+        <thead>
+          <tr><th>邮箱</th><th>收款方式</th><th>推广码</th><th>层级</th><th>上级</th><th>一级</th><th>二级</th><th>点击</th><th>余额</th><th>注册时间</th><th>操作</th></tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script is:inline>
+    // 后台页面托管在 snowballwise.com，API 后端在 Railway，统一指向绝对地址
+    const API = 'https://snowballwise-opc-production.up.railway.app';
+    function getToken(){ return localStorage.getItem('sb_admin') || ''; }
+    function fmt(d){ if(!d) return '-'; try { return new Date(d).toLocaleString('zh-CN'); } catch { return d; } }
+
+    async function load(){
+      const t = document.getElementById('token').value.trim() || getToken();
+      if(!t){ document.getElementById('err').textContent='请输入口令'; return; }
+      try{
+        const r = await fetch(API + '/api/admin/stats', { headers: { 'x-admin-token': t } });
+        if(!r.ok){ document.getElementById('err').textContent='口令错误'; return; }
+        const data = await r.json();
+        localStorage.setItem('sb_admin', t);
+        document.getElementById('login').style.display='none';
+        document.getElementById('dash').style.display='block';
+        document.getElementById('stats').innerHTML = `
+          <div class="stat"><div class="n">${data.totalUsers}</div><div class="l">注册用户</div></div>
+          <div class="stat"><div class="n">${data.totalClicks}</div><div class="l">链接点击</div></div>
+          <div class="stat"><div class="n">${data.totalOrders}</div><div class="l">导入订单</div></div>
+          <div class="stat"><div class="n">${data.totalLedger}</div><div class="l">账本记录</div></div>`;
+        document.getElementById('rows').innerHTML = data.users.length ? data.users.map(u=>`
+          <tr>
+            <td>${u.email}</td>
+            <td class="mono">${u.payAccount||'-'}</td>
+            <td class="mono">${u.promoCode}</td>
+            <td>第${u.depth}级</td>
+            <td class="mono">${u.upline||'-'}</td>
+            <td>${u.l1Count}</td>
+            <td>${u.l2Count}</td>
+            <td>${u.clicks}</td>
+            <td>¥${u.balance.toFixed(2)}</td>
+            <td>${fmt(u.createdAt)}</td>
+            <td><button onclick="delUser('${u.id}')" style="background:#fee2e2;color:#b91c1c;border:0;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:12px">删除</button></td>
+          </tr>`).join('') : '<tr><td colspan="11" class="empty">暂无注册用户</td></tr>';
+      }catch(e){ document.getElementById('err').textContent='网络错误：'+e.message; }
+    }
+
+    function exportJson(){
+      const t = getToken();
+      window.open(API + '/api/admin/export?token=' + encodeURIComponent(t), '_blank');
+    }
+    function toggleImport(){
+      const box = document.getElementById('import-box');
+      box.style.display = box.style.display === 'none' ? 'block' : 'none';
+    }
+    async function importCsv(){
+      const t = getToken();
+      const csv = document.getElementById('csv').value.trim();
+      const msg = document.getElementById('import-msg');
+      if(!csv){ msg.style.color='#b91c1c'; msg.textContent='请先粘贴 CSV'; return; }
+      msg.style.color='#64748b'; msg.textContent='导入中…';
+      try{
+        const r = await fetch(API + '/api/admin/orders/import', {
+          method:'POST',
+          headers:{ 'Content-Type':'application/json', 'x-admin-token': t },
+          body: JSON.stringify({ csv })
+        });
+        const data = await r.json();
+        if(!r.ok){ msg.style.color='#b91c1c'; msg.textContent='失败：'+(data.error||r.status); return; }
+        msg.style.color='#047857';
+        msg.textContent='成功导入 '+data.imported+' 条，忽略 '+(data.errors?data.errors.length:0)+' 条（点刷新看账本）';
+        load();
+      }catch(e){ msg.style.color='#b91c1c'; msg.textContent='网络错误：'+e.message; }
+    }
+    function logout(){ localStorage.removeItem('sb_admin'); location.reload(); }
+    async function delUser(id){
+      if(!confirm('确认删除该用户？此操作不可恢复')) return;
+      const t = getToken();
+      try{
+        const r = await fetch(API + '/api/admin/users/' + id, { method:'DELETE', headers:{ 'x-admin-token': t } });
+        const data = await r.json();
+        if(!r.ok){ alert('删除失败：'+(data.error||r.status)); return; }
+        load();
+      }catch(e){ alert('网络错误：'+e.message); }
+    }
+
+    if(getToken()) load();
+  </script>
+</body>
+</html>
