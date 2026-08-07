@@ -1,0 +1,16 @@
+{
+  "name": "雪球·智慧",
+  "short_name": "雪球智慧",
+  "description": "宝妈副业赚钱平台：购物返现、APP拉新、网赚任务墙，两级分润合规运营。",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#10b981",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" },
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

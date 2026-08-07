@@ -224,6 +224,10 @@ const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
         <div class="lab">收款方式（返现打款用）</div>
         <div class="val" id="dash-pay" style="font-size:15px;word-break:break-all;color:var(--ink-900)">未设置</div>
       </div>
+      <div>
+        <div class="lab">提现中（已申请待打款）</div>
+        <div class="val">¥ <span id="dash-pending">0.00</span></div>
+      </div>
     </div>
 
     <div id="pay-edit" class="hidden" style="margin:0 0 16px;background:var(--bg-soft);border:1px solid var(--line);border-radius:12px;padding:16px">
@@ -251,6 +255,15 @@ const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
     <div class="ledger">
       <h4>返现明细（实时）</h4>
       <div id="dash-ledger"><div class="empty">暂无返现记录</div></div>
+    </div>
+
+    <div class="withdraw" id="withdraw-panel">
+      <h4>提现（满 ¥20 自动结算）</h4>
+      <p style="font-size:13px;color:var(--ink-600);line-height:1.7;margin:0 0 12px">余额满 ¥20 后，系统会自动生成提现单，运营打款到你设置的微信/支付宝。下面是你的提现记录。</p>
+      <div id="withdraw-list"><div class="empty">暂无提现记录</div></div>
+      <button class="btn" type="button" id="dash-withdraw" style="display:none;margin-top:12px">一键申请提现（全额）</button>
+      <div class="err" id="withdraw-err" style="margin-top:8px"></div>
+      <div class="ok" id="withdraw-ok" style="margin-top:8px">提现申请已提交 ✓</div>
     </div>
 
     <div class="actions">
@@ -417,10 +430,12 @@ const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
         document.getElementById('dash-code').textContent = USER.promoCode;
         document.getElementById('dash-link').textContent = USER.referralLink;
         document.getElementById('dash-balance').textContent = USER.balance.toFixed(2);
+        document.getElementById('dash-pending').textContent = (USER.pendingWithdraw || 0).toFixed(2);
         document.getElementById('dash-depth').textContent = USER.depth;
         document.getElementById('dash-pay').textContent = USER.payAccount || '⚠️ 未设置，返现前请先填写';
         document.getElementById('dash-pay').style.color = USER.payAccount ? 'var(--ink-900)' : '#b91c1c';
         loadLedger();
+        loadWithdrawals();
       } catch (err) {
         console.error('dashboard 渲染失败，启用兜底显示', err);
       }
@@ -433,13 +448,43 @@ const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
         const el = document.getElementById('dash-ledger');
         document.getElementById('dash-balance').textContent = out.balance.toFixed(2);
         if (!out.ledger.length) { el.innerHTML = '<div class="empty">暂无返现记录</div>'; return; }
-        el.innerHTML = out.ledger.slice(0, 20).map(l => `
-          <div class="item">
-            <span>${new Date(l.createdAt).toLocaleString('zh-CN')} · ${escapeHtml(l.note || l.type)}</span>
+        el.innerHTML = out.ledger.slice(0, 20).map(l => {
+          const from = l.fromPromoCode ? ` · 来自 ${escapeHtml(l.fromPromoCode)}` : '';
+          return `<div class="item">
+            <span>${new Date(l.createdAt).toLocaleString('zh-CN')} · ${escapeHtml(l.note || l.type)}${from}</span>
             <span class="amt">+¥${l.amount.toFixed(2)}</span>
-          </div>
-        `).join('');
+          </div>`;
+        }).join('');
       } catch (e) { /* 忽略，账本为空时 API 401 不显示 */ }
+    }
+
+    async function loadWithdrawals() {
+      try {
+        const out = await callApi('/api/withdrawals');
+        document.getElementById('dash-pending').textContent = (out.pendingWithdraw || 0).toFixed(2);
+        const el = document.getElementById('withdraw-list');
+        const btn = document.getElementById('dash-withdraw');
+        if (out.balance >= out.threshold) {
+          btn.style.display = 'inline-block';
+          btn.textContent = '一键申请提现（¥' + out.balance.toFixed(2) + '）';
+        } else { btn.style.display = 'none'; }
+        if (!out.withdrawals.length) { el.innerHTML = '<div class="empty">暂无提现记录</div>'; return; }
+        el.innerHTML = out.withdrawals.slice(0, 20).map(w => {
+          const st = w.status === 'pending' ? '待打款' : w.status === 'paid' ? '已到账' : '已驳回';
+          const c = w.status === 'paid' ? '#047857' : w.status === 'pending' ? '#b45309' : '#b91c1c';
+          return '<div class="item"><span>' + new Date(w.createdAt).toLocaleString('zh-CN') + ' · ' + st + '</span><span class="amt" style="color:' + c + '">¥' + w.amount.toFixed(2) + '</span></div>';
+        }).join('');
+      } catch (e) {}
+    }
+
+    async function doWithdraw() {
+      hideError('withdraw-err');
+      try {
+        const out = await callApi('/api/withdraw', { method: 'POST', body: JSON.stringify({}) });
+        showOk('withdraw-ok', '提现申请已提交，运营将打款到你设置的收款方式 ✓');
+        USER.balance = out.balance; USER.pendingWithdraw = out.pendingWithdraw;
+        renderDash();
+      } catch (e) { showError('withdraw-err', '申请失败：' + e.message); }
     }
 
     function escapeHtml(s) { return String(s).replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c])); }
@@ -462,6 +507,7 @@ const API_BASE = 'https://snowballwise-opc-production.up.railway.app';
       if (!box.classList.contains('hidden')) document.getElementById('pay-input').focus();
     });
     document.getElementById('pay-save').addEventListener('click', savePay);
+    document.getElementById('dash-withdraw').addEventListener('click', doWithdraw);
 
     // 兼容内联事件（万一其他页面/调试用到）
     window.doRegister = doRegister;
